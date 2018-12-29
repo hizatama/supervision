@@ -1,0 +1,23 @@
+# OS
+*~
+*.bak
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+/.buildpath
+/.project
+/.settings
+/*.tmproj
+/nbproject
+/*.sublime-project
+/*.sublime-workspace
+/vendor
+
+# Application, Framework
+.vagrant
+yarn-error.log
+npm-debug.log
+/node_modules
+package-lock.json

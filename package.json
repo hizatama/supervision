@@ -1,0 +1,18 @@
+{
+    "name": "supervision",
+    "version": "0.1.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "npm run sass-watch",
+        "sass-compile": "node-sass src/scss -o dist/css -r --output-style expanded",
+        "sass-watch": "node-sass src/scss -o dist/css -w -r --output-style expanded",
+        "server": "php -S 0.0.0.0:8080 -t dist"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "node-sass": "*"
+    }
+}
