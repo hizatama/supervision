@@ -1,0 +1,42 @@
+/* =============================================
+* Module - Button
+* ============================================= */
+%ButtonBase {
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    font-size: 1.6rem;
+    padding: 0.625em 1.25em;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+/* ---- OK系のボタン ---- */
+.button,
+.button__default {
+    @extend %ButtonBase;
+    background-color: $theme-color;
+    color: #fff;
+
+    &:hover {
+        background-color: lighten($theme-color, 10%);
+    }
+}
+
+/* ---- お問い合わせボタン ---- */
+.button__contact {
+    @extend %ButtonBase;
+    background-color: $highlight-color;
+    color: #fff;
+
+    &:hover {
+        background-color: lighten($highlight-color, 10%);
+    }
+
+}

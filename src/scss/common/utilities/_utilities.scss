@@ -1,0 +1,183 @@
+/* =============================================
+ * Utilities
+ * ============================================= */
+
+// ---------------------------
+// 表示・非表示
+// h-sp/v-pc -> PCでのみ表示
+// v-sp/h-pc -> SPでのみ表示
+//
+// ※hide-sp/view-spの略
+// ---------------------------
+@include pc {
+    .v-sp, .h-pc {
+        display: none !important;
+    }
+}
+@include sp {
+    .v-pc, .h-sp {
+        display: none !important;
+    }
+}
+
+// ---------------------------
+// 汎用スタイル
+// ---------------------------
+/* ---- display ---- */
+html body .db  {display: block;}
+html body .dib  {display: inline-block;}
+html body .dn  {display: none;}
+
+
+// ---------------------------
+// テキスト系スタイル
+// ---------------------------
+/* ---- テキスト位置揃え ---- */
+html body .tac  {text-align: center}
+html body .tal  {text-align: left}
+html body .tar  {text-align: right}
+
+html body .fwb {font-weight: bold;}
+html body .fwn {font-weight: normal;}
+
+/* ---- テキスト装飾 ---- */
+html body .tdn {text-decoration: none;}
+html body .tdu {text-decoration: underline;}
+
+/* ---- テキストサイズ ---- */
+html body .fs10 {font-size: 1.0rem;}
+html body .fs11 {font-size: 1.1rem;}
+html body .fs12 {font-size: 1.2rem;}
+html body .fs13 {font-size: 1.3rem;}
+html body .fs14 {font-size: 1.4rem;}
+html body .fs15 {font-size: 1.5rem;}
+html body .fs16 {font-size: 1.6rem;}
+html body .fs17 {font-size: 1.7rem;}
+html body .fs18 {font-size: 1.8rem;}
+html body .fs19 {font-size: 1.9rem;}
+html body .fs20 {font-size: 2.0rem;}
+html body .fs21 {font-size: 2.1rem;}
+html body .fs22 {font-size: 2.2rem;}
+html body .fs23 {font-size: 2.3rem;}
+html body .fs24 {font-size: 2.4rem;}
+html body .fs25 {font-size: 2.5rem;}
+html body .fs26 {font-size: 2.6rem;}
+html body .fs27 {font-size: 2.7rem;}
+html body .fs28 {font-size: 2.8rem;}
+html body .fs29 {font-size: 2.9rem;}
+html body .fs30 {font-size: 3.0rem;}
+html body .fs31 {font-size: 3.1rem;}
+html body .fs32 {font-size: 3.2rem;}
+html body .fs33 {font-size: 3.3rem;}
+html body .fs34 {font-size: 3.4rem;}
+html body .fs35 {font-size: 3.5rem;}
+html body .fs36 {font-size: 3.6rem;}
+html body .fs37 {font-size: 3.7rem;}
+html body .fs38 {font-size: 3.8rem;}
+html body .fs39 {font-size: 3.9rem;}
+html body .fs40 {font-size: 4.0rem;}
+html body .fs41 {font-size: 4.1rem;}
+html body .fs42 {font-size: 4.2rem;}
+html body .fs43 {font-size: 4.3rem;}
+html body .fs44 {font-size: 4.4rem;}
+html body .fs45 {font-size: 4.5rem;}
+html body .fs46 {font-size: 4.6rem;}
+@include pc {
+    html body .fs10-pc {font-size: 1.0rem;}
+    html body .fs11-pc {font-size: 1.1rem;}
+    html body .fs12-pc {font-size: 1.2rem;}
+    html body .fs13-pc {font-size: 1.3rem;}
+    html body .fs14-pc {font-size: 1.4rem;}
+    html body .fs15-pc {font-size: 1.5rem;}
+    html body .fs16-pc {font-size: 1.6rem;}
+    html body .fs17-pc {font-size: 1.7rem;}
+    html body .fs18-pc {font-size: 1.8rem;}
+    html body .fs19-pc {font-size: 1.9rem;}
+    html body .fs20-pc {font-size: 2.0rem;}
+    html body .fs21-pc {font-size: 2.1rem;}
+    html body .fs22-pc {font-size: 2.2rem;}
+    html body .fs23-pc {font-size: 2.3rem;}
+    html body .fs24-pc {font-size: 2.4rem;}
+    html body .fs25-pc {font-size: 2.5rem;}
+    html body .fs26-pc {font-size: 2.6rem;}
+    html body .fs27-pc {font-size: 2.7rem;}
+    html body .fs28-pc {font-size: 2.8rem;}
+    html body .fs29-pc {font-size: 2.9rem;}
+    html body .fs30-pc {font-size: 3.0rem;}
+    html body .fs31-pc {font-size: 3.1rem;}
+    html body .fs32-pc {font-size: 3.2rem;}
+    html body .fs33-pc {font-size: 3.3rem;}
+    html body .fs34-pc {font-size: 3.4rem;}
+    html body .fs35-pc {font-size: 3.5rem;}
+    html body .fs36-pc {font-size: 3.6rem;}
+    html body .fs37-pc {font-size: 3.7rem;}
+    html body .fs38-pc {font-size: 3.8rem;}
+    html body .fs39-pc {font-size: 3.9rem;}
+    html body .fs40-pc {font-size: 4.0rem;}
+    html body .fs41-pc {font-size: 4.1rem;}
+    html body .fs42-pc {font-size: 4.2rem;}
+    html body .fs43-pc {font-size: 4.3rem;}
+    html body .fs44-pc {font-size: 4.4rem;}
+    html body .fs45-pc {font-size: 4.5rem;}
+    html body .fs46-pc {font-size: 4.6rem;}
+}
+@include sp {
+    html body .fs10-sp {font-size: 1.0rem;}
+    html body .fs11-sp {font-size: 1.1rem;}
+    html body .fs12-sp {font-size: 1.2rem;}
+    html body .fs13-sp {font-size: 1.3rem;}
+    html body .fs14-sp {font-size: 1.4rem;}
+    html body .fs15-sp {font-size: 1.5rem;}
+    html body .fs16-sp {font-size: 1.6rem;}
+    html body .fs17-sp {font-size: 1.7rem;}
+    html body .fs18-sp {font-size: 1.8rem;}
+    html body .fs19-sp {font-size: 1.9rem;}
+    html body .fs20-sp {font-size: 2.0rem;}
+    html body .fs21-sp {font-size: 2.1rem;}
+    html body .fs22-sp {font-size: 2.2rem;}
+    html body .fs23-sp {font-size: 2.3rem;}
+    html body .fs24-sp {font-size: 2.4rem;}
+    html body .fs25-sp {font-size: 2.5rem;}
+    html body .fs26-sp {font-size: 2.6rem;}
+    html body .fs27-sp {font-size: 2.7rem;}
+    html body .fs28-sp {font-size: 2.8rem;}
+    html body .fs29-sp {font-size: 2.9rem;}
+    html body .fs30-sp {font-size: 3.0rem;}
+    html body .fs31-sp {font-size: 3.1rem;}
+    html body .fs32-sp {font-size: 3.2rem;}
+    html body .fs33-sp {font-size: 3.3rem;}
+    html body .fs34-sp {font-size: 3.4rem;}
+    html body .fs35-sp {font-size: 3.5rem;}
+    html body .fs36-sp {font-size: 3.6rem;}
+    html body .fs37-sp {font-size: 3.7rem;}
+    html body .fs38-sp {font-size: 3.8rem;}
+    html body .fs39-sp {font-size: 3.9rem;}
+    html body .fs40-sp {font-size: 4.0rem;}
+    html body .fs41-sp {font-size: 4.1rem;}
+    html body .fs42-sp {font-size: 4.2rem;}
+    html body .fs43-sp {font-size: 4.3rem;}
+    html body .fs44-sp {font-size: 4.4rem;}
+    html body .fs45-sp {font-size: 4.5rem;}
+    html body .fs46-sp {font-size: 4.6rem;}
+}
+
+/* ---- テキストカラー ---- */
+.fc-red {
+    color: #FF0000;
+}
+
+
+@for $i from 0 through 20 {
+    $m: $i * 5;
+    $unit: "px";
+    @if $i==0 {$unit: "";}
+
+    html body .mt#{$m} {margin-top: #{$m}#{$unit}}
+    html body .mb#{$m} {margin-bottom: #{$m}#{$unit}}
+    html body .ml#{$m} {margin-left: #{$m}#{$unit}}
+    html body .mr#{$m} {margin-right: #{$m}#{$unit}}
+    html body .pt#{$m} {padding-top: #{$m}#{$unit}}
+    html body .pb#{$m} {padding-bottom: #{$m}#{$unit}}
+    html body .pl#{$m} {padding-left: #{$m}#{$unit}}
+    html body .pr#{$m} {padding-right: #{$m}#{$unit}}
+}

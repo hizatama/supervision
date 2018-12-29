@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+/* =============================================
+ * Module - accordion
+ * ============================================= */
+
+/* ---------------------------
+ Default
+ --------------------------- */
+[data-accordion-opener] {
+    cursor: pointer;
+}
+[data-accordion-content] {
+    overflow: hidden;
+    padding: 0;
+}
+[data-accordion-content].__opened {
+}
