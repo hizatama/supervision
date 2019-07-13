@@ -9,26 +9,17 @@
     background-color: #666;
     position: fixed;
     bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
     width: 100%;
     z-index: 10;
-    max-width: 1100px;
 
     padding: 10px;
     transition: left 0.3s ease-in-out, width 0.3s ease-in-out;
   }
 
-  &.is-attached {
-
+  &.is-attached:not(.is-fixed) {
     .sticky-footer__inner {
       position: absolute;
-    }
-  }
-
-  &.is-animation {
-    .sticky-footer__inner {
-      transition: none;
     }
   }
 }

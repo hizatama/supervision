@@ -19,7 +19,7 @@
     <div id="app" class="application layout">
         <main class="main layout-right">
             @yield('header')
-            <div class="main-inner container">
+            <div class="main-inner">
               @yield('content')
             </div>
         </main>

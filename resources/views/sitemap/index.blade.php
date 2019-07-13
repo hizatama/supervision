@@ -6,86 +6,87 @@
 
 @endsection
 @section('content')
-  <h1>サイトマップ</h1>
-
   {{Form::open(['route'=>'sitemap.store', 'method' => 'post'])}}
-  <section class="section section--url">
-    <h2>共通設定</h2>
+  <div class="container">
+    <h1>サイトマップ</h1>
+    <section class="section section--url">
+      <h2>共通設定</h2>
 
-    <h3>URL</h3>
-    <table class="table table--fluid">
+      <h3>URL</h3>
+      <table class="table table--fluid">
+        <tr>
+          <th><label for="base_url_production">本番環境</label></th>
+          <td>{{Form::text('base_url_production', $siteMap->url_production, ['id'=>'base_url_production', 'class' => 'form-control'])}}</td>
+          <th><label for="base_url_staging">テスト環境</label></th>
+          <td>{{Form::text('base_url_staging', $siteMap->url_staging, ['id'=>'base_url_staging', 'class' => 'form-control'])}}</td>
+        </tr>
+      </table>
+
+      <h3>meta</h3>
+      <table class="table table--fluid">
+        <tr>
+          <th><label for="title_prefix">title prefix</label></th>
+          <td>{{Form::text('title_prefix', $siteMap->title_prefix, ['id'=>'title_prefix', 'class' => 'form-control'])}}</td>
+          <th><label for="title_suffix">title suffix</label></th>
+          <td>{{Form::text('title_suffix', $siteMap->title_suffix, ['id'=>'title_suffix', 'class' => 'form-control'])}}</td>
+        </tr>
+        <tr>
+          <th><label for="keywords">keywords</label></th>
+          <td colspan="3">{{Form::text('keywords', $siteMap->keywords, ['id'=>'keywords', 'class' => 'form-control'])}}</td>
+        </tr>
+        <tr>
+          <th><label for="description">description</label></th>
+          <td colspan="3">{{Form::text('description', $siteMap->description, ['id'=>'description', 'class' => 'form-control'])}}</td>
+        </tr>
+        <tr>
+          <th><label for="og_image">og:image</label></th>
+          <td colspan="3">{{Form::text('og_image', $siteMap->og_image, ['id'=>'og_image', 'class' => 'form-control'])}}</td>
+        </tr>
+      </table>
+    </section>
+
+    <h3>ページ一覧</h3>
+    <table class="table table--pages">
+      <thead>
       <tr>
-        <th><label for="base_url_production">本番環境</label></th>
-        <td>{{Form::text('base_url_production', $siteMap->url_production, ['id'=>'base_url_production', 'class' => 'form-control'])}}</td>
-        <th><label for="base_url_staging">テスト環境</label></th>
-        <td>{{Form::text('base_url_staging', $siteMap->url_staging, ['id'=>'base_url_staging', 'class' => 'form-control'])}}</td>
+        <th rowspan="2">ページタイトル</th>
+        <th rowspan="2">パス</th>
+        <th colspan="7">meta</th>
+        <th rowspan="2">CHECK</th>
       </tr>
+      <tr>
+        <th>title</th>
+        <th>keywords</th>
+        <th>description</th>
+        <th>og:title</th>
+        <th>og:url</th>
+        <th>og:image</th>
+        <th>og:description</th>
+      </tr>
+      </thead>
+      <tbody id="table_body">
+      @foreach($pages as $idx => $page)
+        <tr>
+          <td>{{Form::hidden('pages['.$idx.'][id]', $page->id)}}{{Form::text('pages['.$idx.'][name]', $page->name, ['class' => 'form-control'])}}</td>
+          <td>{{Form::text('pages['.$idx.'][path]', $page->path, ['class' => 'form-control'])}}</td>
+          <td>{{Form::text('pages['.$idx.'][title]', $page->title, ['class' => 'form-control'])}}</td>
+          <td>{{Form::text('pages['.$idx.'][keywords]', $page->keywords, ['class' => 'form-control'])}}</td>
+          <td>{{Form::text('pages['.$idx.'][description]', $page->description, ['class' => 'form-control'])}}</td>
+          <td>{{Form::text('pages['.$idx.'][og_title]', $page->og_title, ['class' => 'form-control'])}}</td>
+          <td>{{Form::text('pages['.$idx.'][og_url]', $page->og_url, ['class' => 'form-control'])}}</td>
+          <td>{{Form::text('pages['.$idx.'][og_image]', $page->og_image, ['class' => 'form-control'])}}</td>
+          <td>{{Form::text('pages['.$idx.'][og_description]', $page->og_description, ['class' => 'form-control'])}}</td>
+        </tr>
+      @endforeach
+      </tbody>
     </table>
-
-    <h3>meta</h3>
-    <table class="table table--fluid">
-      <tr>
-        <th><label for="title_prefix">title prefix</label></th>
-        <td>{{Form::text('title_prefix', $siteMap->title_prefix, ['id'=>'title_prefix', 'class' => 'form-control'])}}</td>
-        <th><label for="title_suffix">title suffix</label></th>
-        <td>{{Form::text('title_suffix', $siteMap->title_suffix, ['id'=>'title_suffix', 'class' => 'form-control'])}}</td>
-      </tr>
-      <tr>
-        <th><label for="keywords">keywords</label></th>
-        <td colspan="3">{{Form::text('keywords', $siteMap->keywords, ['id'=>'keywords', 'class' => 'form-control'])}}</td>
-      </tr>
-      <tr>
-        <th><label for="description">description</label></th>
-        <td colspan="3">{{Form::text('description', $siteMap->description, ['id'=>'description', 'class' => 'form-control'])}}</td>
-      </tr>
-      <tr>
-        <th><label for="og_image">og:image</label></th>
-        <td colspan="3">{{Form::text('og_image', $siteMap->og_image, ['id'=>'og_image', 'class' => 'form-control'])}}</td>
-      </tr>
-    </table>
-  </section>
-
-  <h3>ページ一覧</h3>
-  <table class="table table--pages">
-    <thead>
-    <tr>
-      <th rowspan="2">ページタイトル</th>
-      <th rowspan="2">パス</th>
-      <th colspan="7">meta</th>
-      <th rowspan="2">CHECK</th>
-    </tr>
-    <tr>
-      <th>title</th>
-      <th>keywords</th>
-      <th>description</th>
-      <th>og:title</th>
-      <th>og:url</th>
-      <th>og:image</th>
-      <th>og:description</th>
-    </tr>
-    </thead>
-    <tbody id="table_body">
-    @foreach($pages as $idx => $page)
-      <tr>
-        <td>{{Form::hidden('pages['.$idx.'][id]', $page->id)}}{{Form::text('pages['.$idx.'][name]', $page->name, ['class' => 'form-control'])}}</td>
-        <td>{{Form::text('pages['.$idx.'][path]', $page->path, ['class' => 'form-control'])}}</td>
-        <td>{{Form::text('pages['.$idx.'][title]', $page->title, ['class' => 'form-control'])}}</td>
-        <td>{{Form::text('pages['.$idx.'][keywords]', $page->keywords, ['class' => 'form-control'])}}</td>
-        <td>{{Form::text('pages['.$idx.'][description]', $page->description, ['class' => 'form-control'])}}</td>
-        <td>{{Form::text('pages['.$idx.'][og_title]', $page->og_title, ['class' => 'form-control'])}}</td>
-        <td>{{Form::text('pages['.$idx.'][og_url]', $page->og_url, ['class' => 'form-control'])}}</td>
-        <td>{{Form::text('pages['.$idx.'][og_image]', $page->og_image, ['class' => 'form-control'])}}</td>
-        <td>{{Form::text('pages['.$idx.'][og_description]', $page->og_description, ['class' => 'form-control'])}}</td>
-      </tr>
-    @endforeach
-    </tbody>
-  </table>
-  <div class="text-center">
-    <button type="button" id="add_row" class="btn btn-secondary">ページ追加</button>
+    <div class="text-center">
+      <button type="button" id="add_row" class="btn btn-secondary">ページ追加</button>
+    </div>
   </div>
 
-  <div class="sticky-footer">
-    <div class="container sticky-footer__inner">
+  <div class="sticky-footer is-fixed">
+    <div class="sticky-footer__inner">
       <div class="text-right">
         {{Form::submit('登録する', ['class'=>'btn btn-primary'])}}
       </div>
