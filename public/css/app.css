@@ -10670,3 +10670,31 @@ a.text-dark:focus {
   width: 100%;
 }
 
+.sticky-footer {
+  position: relative;
+  width: 100%;
+  margin-top: 40px;
+  height: 60px;
+}
+
+.sticky-footer__inner {
+  background-color: #666;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  z-index: 10;
+  max-width: 1100px;
+  padding: 10px;
+  transition: left 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+
+.sticky-footer.is-attached .sticky-footer__inner {
+  position: absolute;
+}
+
+.sticky-footer.is-animation .sticky-footer__inner {
+  transition: none;
+}
+

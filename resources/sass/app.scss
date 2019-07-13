@@ -13,28 +13,6 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
-// =============================================
-// table
-// =============================================
-.table--pages {
 
-  thead {
-    font-size: 12px;
-  }
-  tbody {
-    font-size: 11px;
-  }
-
-  input[type="text"] {
-    font-size: inherit;
-    min-width: 180px;
-  }
-}
-
-.table--fluid {
-  width: 100%;
-
-  input[type="text"] {
-    width: 100%;
-  }
-}
+@import 'components/table';
+@import 'components/sticky-footer';

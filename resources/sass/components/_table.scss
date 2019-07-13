@@ -1,0 +1,25 @@
+// =============================================
+// table
+// =============================================
+.table--pages {
+
+  thead {
+    font-size: 12px;
+  }
+  tbody {
+    font-size: 11px;
+  }
+
+  input[type="text"] {
+    font-size: inherit;
+    min-width: 180px;
+  }
+}
+
+.table--fluid {
+  width: 100%;
+
+  input[type="text"] {
+    width: 100%;
+  }
+}

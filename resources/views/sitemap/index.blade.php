@@ -17,8 +17,6 @@
       <tr>
         <th><label for="base_url_production">本番環境</label></th>
         <td>{{Form::text('base_url_production', $siteMap->url_production, ['id'=>'base_url_production', 'class' => 'form-control'])}}</td>
-      </tr>
-      <tr>
         <th><label for="base_url_staging">テスト環境</label></th>
         <td>{{Form::text('base_url_staging', $siteMap->url_staging, ['id'=>'base_url_staging', 'class' => 'form-control'])}}</td>
       </tr>
@@ -80,9 +78,17 @@
     @endforeach
     </tbody>
   </table>
-  <div><button type="button" id="add_row" class="btn btn-secondary">追加</button></div>
+  <div class="text-center">
+    <button type="button" id="add_row" class="btn btn-secondary">追加</button>
+  </div>
 
-  {{Form::submit('登録する', ['class'=>'btn btn-primary'])}}
+  <div class="sticky-footer">
+    <div class="container sticky-footer__inner">
+      <div class="text-right">
+        {{Form::submit('登録する', ['class'=>'btn btn-primary'])}}
+      </div>
+    </div>
+  </div>
   {{Form::close()}}
 @endsection
 @section('scripts')
@@ -105,6 +111,9 @@
       $newRow.innerHTML = template.replace(/\?/g, lastIndex);
       $tableBody.appendChild($newRow);
       lastIndex++;
+
+      const ne = new Event('resize');
+      window.dispatchEvent(ne)
     })
   </script>
 @endsection
