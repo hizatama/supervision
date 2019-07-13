@@ -1,0 +1,40 @@
+
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+// =============================================
+// table
+// =============================================
+.table--pages {
+
+  thead {
+    font-size: 12px;
+  }
+  tbody {
+    font-size: 11px;
+  }
+
+  input[type="text"] {
+    font-size: inherit;
+    min-width: 180px;
+  }
+}
+
+.table--fluid {
+  width: 100%;
+
+  input[type="text"] {
+    width: 100%;
+  }
+}
