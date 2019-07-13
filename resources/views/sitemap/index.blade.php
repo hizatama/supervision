@@ -51,10 +51,11 @@
     <tr>
       <th rowspan="2">ページタイトル</th>
       <th rowspan="2">パス</th>
-      <th colspan="6">meta</th>
+      <th colspan="7">meta</th>
       <th rowspan="2">CHECK</th>
     </tr>
     <tr>
+      <th>title</th>
       <th>keywords</th>
       <th>description</th>
       <th>og:title</th>
@@ -66,20 +67,21 @@
     <tbody id="table_body">
     @foreach($pages as $idx => $page)
       <tr>
-        <td>{{Form::hidden('['.$idx.'][id]', $page->id)}}{{Form::text('['.$idx.'][title]', $page->title)}}</td>
-        <td>{{Form::text('['.$idx.'][path]', $page->path)}}</td>
-        <td>{{Form::text('['.$idx.'][keywords]', $page->keywords)}}</td>
-        <td>{{Form::text('['.$idx.'][description]', $page->description)}}</td>
-        <td>{{Form::text('['.$idx.'][ogTitle]', $page->og_title)}}</td>
-        <td>{{Form::text('['.$idx.'][ogUrl]', $page->og_url)}}</td>
-        <td>{{Form::text('['.$idx.'][ogImage]', $page->og_image)}}</td>
-        <td>{{Form::text('['.$idx.'][ogDescription]', $page->og_description)}}</td>
+        <td>{{Form::hidden('pages['.$idx.'][id]', $page->id)}}{{Form::text('pages['.$idx.'][name]', $page->name, ['class' => 'form-control'])}}</td>
+        <td>{{Form::text('pages['.$idx.'][path]', $page->path, ['class' => 'form-control'])}}</td>
+        <td>{{Form::text('pages['.$idx.'][title]', $page->title, ['class' => 'form-control'])}}</td>
+        <td>{{Form::text('pages['.$idx.'][keywords]', $page->keywords, ['class' => 'form-control'])}}</td>
+        <td>{{Form::text('pages['.$idx.'][description]', $page->description, ['class' => 'form-control'])}}</td>
+        <td>{{Form::text('pages['.$idx.'][og_title]', $page->og_title, ['class' => 'form-control'])}}</td>
+        <td>{{Form::text('pages['.$idx.'][og_url]', $page->og_url, ['class' => 'form-control'])}}</td>
+        <td>{{Form::text('pages['.$idx.'][og_image]', $page->og_image, ['class' => 'form-control'])}}</td>
+        <td>{{Form::text('pages['.$idx.'][og_description]', $page->og_description, ['class' => 'form-control'])}}</td>
       </tr>
     @endforeach
     </tbody>
   </table>
   <div class="text-center">
-    <button type="button" id="add_row" class="btn btn-secondary">追加</button>
+    <button type="button" id="add_row" class="btn btn-secondary">ページ追加</button>
   </div>
 
   <div class="sticky-footer">
@@ -94,10 +96,12 @@
 @section('scripts')
   <script>
     let lastIndex = parseInt('{{count($pages)}}', 10);
+
     const $addRow = document.getElementById('add_row');
     const $tableBody = document.getElementById('table_body');
-    const template = `<td>{{Form::hidden('pages[?][id]', '?')}}{{Form::text('pages[?][title]', null, ['class'=>'form-control'])}}</td>
+    const template = `<td>{{Form::hidden('pages[?][id]', '?')}}{{Form::text('pages[?][name]', null, ['class'=>'form-control'])}}</td>
       <td>{{Form::text('pages[?][path]', null, ['class'=>'form-control'])}}</td>
+      <td>{{Form::text('pages[?][title]', null, ['class'=>'form-control'])}}</td>
       <td>{{Form::text('pages[?][keywords]', null, ['class'=>'form-control'])}}</td>
       <td>{{Form::text('pages[?][description]', null, ['class'=>'form-control'])}}</td>
       <td>{{Form::text('pages[?][og_title]', null, ['class'=>'form-control'])}}</td>
@@ -105,8 +109,7 @@
       <td>{{Form::text('pages[?][og_image]', null, ['class'=>'form-control'])}}</td>
       <td>{{Form::text('pages[?][og_description]', null, ['class'=>'form-control'])}}</td>`;
 
-    $addRow.addEventListener('click', function (e) {
-      e.preventDefault();
+    function addRow() {
       const $newRow = document.createElement('tr');
       $newRow.innerHTML = template.replace(/\?/g, lastIndex);
       $tableBody.appendChild($newRow);
@@ -114,6 +117,60 @@
 
       const ne = new Event('resize');
       window.dispatchEvent(ne)
-    })
+    }
+
+    $addRow.addEventListener('click', function (e) {
+      e.preventDefault();
+      addRow();
+    });
+
+    $tableBody.addEventListener('keydown', function (e) {
+      if (e.target.tagName !== 'INPUT') return;
+      const matches = /^pages\[(\d+)]\[(\w+)]$/.exec(e.target.name);
+      if (matches) {
+        const currentIndex = parseInt(matches[1], 10);
+        const currentKey = matches[2];
+        let nextInput;
+        if (e.key === 'ArrowUp') {
+          nextInput = document.querySelector('[name="pages[' + (Math.max(0, currentIndex - 1)) + '][' + currentKey + ']"]');
+
+          // 最後の行から移動した時、空行なら削除する
+          const lastRow = $tableBody.querySelector('tr:last-child');
+          const currentRow = e.target.parentElement.parentElement;
+          if(lastRow === currentRow) {
+            const rowInputs = currentRow.querySelectorAll('input[type="text"]');
+            let isEmptyRow = true;
+            rowInputs.forEach((el)=>{
+              if(el.value.length > 0) {
+                isEmptyRow = false;
+              }
+            });
+            if(isEmptyRow) {
+              currentRow.remove();
+              lastIndex--;
+            }
+          }
+        } else if (e.key === 'ArrowDown') {
+          nextInput = document.querySelector('[name="pages[' + (Math.min(lastIndex, currentIndex + 1)) + '][' + currentKey + ']"]');
+          if (!nextInput) {
+            addRow();
+            nextInput = document.querySelector('[name="pages[' + (Math.min(lastIndex, currentIndex + 1)) + '][' + currentKey + ']"]');
+          }
+        } else if (e.key === 'ArrowLeft' && e.target.selectionStart === 0 && e.target.selectionEnd === 0) {
+          nextInput = e.target.parentNode.previousElementSibling;
+          if (nextInput) {
+            nextInput = nextInput.querySelector('input[type="text"]');
+            nextInput.setSelectionRange(-1, -1);
+          }
+        } else if (e.key === 'ArrowRight' && e.target.selectionStart === e.target.value.length && e.target.selectionEnd === e.target.value.length) {
+          nextInput = e.target.parentNode.nextElementSibling;
+          if (nextInput) {
+            nextInput = nextInput.querySelector('input[type="text"]');
+            nextInput.setSelectionRange(0, 0);
+          }
+        }
+        if (nextInput) nextInput.focus();
+      }
+    });
   </script>
 @endsection
