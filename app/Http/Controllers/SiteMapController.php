@@ -38,14 +38,13 @@ class SiteMapController extends Controller
    */
   public function store()
   {
-    dump(Request::all());
     return $this->viewIndex();
   }
 
   public function check()
   {
     // TODO 全てのページをクロールする
-    $pages = [];
+    $pages = Request::all('pages');
     $validator = new \HtmlValidator\Validator;
     $parser = new \PHPHtmlParser\Dom;
     foreach ($pages as /* @var Model\SiteMapPage */ $page) {
