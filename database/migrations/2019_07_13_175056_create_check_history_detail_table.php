@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CraeteCheckHistoryTable extends Migration
+class CreateCheckHistoryDetailTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CraeteCheckHistoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('check_history', function (Blueprint $table) {
+        Schema::create('check_history_detail', function (Blueprint $table) {
             $table->increments('id');
-            $table->bigInteger('page_id');
-            $table->bigInteger('revision');
-            $table->boolean('is_passed');
+            $table->integer('history_id');
+            $table->integer('page_id');
+            $table->string('key');
+            $table->string('type');
+            $table->string('message');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CraeteCheckHistoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('check_history');
+        Schema::dropIfExists('check_history_detail');
     }
 }

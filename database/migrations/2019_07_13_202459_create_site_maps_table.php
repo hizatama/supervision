@@ -17,6 +17,7 @@ class CreateSiteMapsTable extends Migration
       $table->bigIncrements('id');
       $table->string('url_production');
       $table->string('url_staging');
+      $table->string('charset');
       $table->string('title_prefix');
       $table->string('title_suffix');
       $table->string('keywords');

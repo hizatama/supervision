@@ -9,7 +9,8 @@ class PageHead
     public $keywords;
     public $description;
     public $canonical;
-    public $ogImage;
-    public $ogTitle;
-    public $ogUrl;
+    public $og_image;
+    public $og_title;
+    public $og_url;
+    public $og_description;
 }
