@@ -69,13 +69,18 @@
     </section>
 
     <h3>ページ一覧</h3>
-    @if($checkHistories)
-      <ul class="alert alert-danger" role="alert">
-      @foreach($checkHistories as $historyDetail)
-        <li>page{{$historyDetail->page_id}} {{$historyDetail->key}} :: {{$historyDetail->message}}</li>
-      @endforeach
-      </ul>
-    @endif
+{{--    @if($checkHistories)--}}
+{{--      <ul class="alert alert-danger" role="alert">--}}
+{{--      @foreach($checkHistories as $historyDetail)--}}
+{{--        <li>page{{$historyDetail->page_id}} {{$historyDetail->key}} :: {{$historyDetail->message}}</li>--}}
+{{--      @endforeach--}}
+{{--      </ul>--}}
+{{--    @endif--}}
+    <div class="text-right">
+      {{Form::button('ページチェックを実行', [
+        'class' => 'btn btn-secondary exec-check-page',
+        ])}}
+    </div>
     <div class="table--pages-wrapper">
 
       <table class="table table--pages table-fixed" id="table-pages">
@@ -100,42 +105,98 @@
         @foreach($pages as $idx => $page)
           <tr>
             <td>{{Form::hidden('pages['.$idx.'][id]', $page->id)}}{{Form::text('pages['.$idx.'][name]', $page->name, ['class' => 'form-control', 'required' => 'required'])}}</td>
-            <td>{{Form::text('pages['.$idx.'][path]', $page->path, ['class' => 'form-control', 'required' => 'required'])}}</td>
+            <td class="cell-path">{{Form::text('pages['.$idx.'][path]', $page->path, ['class' => 'form-control'])}}</td>
             <td>
               {{Form::checkbox('pages['.$idx.'][title_use_common]', 1, $page->title_use_common, ['class' => 'use-common-checkbox'])}}
               {{Form::text('pages['.$idx.'][title]', $page->title, ['class' => 'form-control custom-form-inline'])}}
+              @if(isset($page->errors['title']))
+                <ul class="alert alert-danger" role="alert">
+                @foreach($page->errors['title'] as $historyDetail)
+                  <li>{{$historyDetail->message}}</li>
+                @endforeach
+                </ul>
+              @endif
             </td>
             <td>
               {{Form::checkbox('pages['.$idx.'][keywords_use_common]', 1, $page->keywords_use_common, ['class' => 'use-common-checkbox'])}}
               {{Form::text('pages['.$idx.'][keywords]', $page->keywords, ['class' => 'form-control custom-form-inline'])}}
+              @if(isset($page->errors['keywords']))
+                <ul class="alert alert-danger" role="alert">
+                @foreach($page->errors['keywords'] as $historyDetail)
+                  <li>{{$historyDetail->message}}</li>
+                @endforeach
+                </ul>
+              @endif
             </td>
             <td>
               {{Form::checkbox('pages['.$idx.'][description_use_common]', 1, $page->description_use_common, ['class' => 'use-common-checkbox'])}}
               {{Form::text('pages['.$idx.'][description]', $page->description, ['class' => 'form-control custom-form-inline'])}}
+              @if(isset($page->errors['description']))
+                <ul class="alert alert-danger" role="alert">
+                @foreach($page->errors['description'] as $historyDetail)
+                  <li>{{$historyDetail->message}}</li>
+                @endforeach
+                </ul>
+              @endif
             </td>
             <td>
               {{Form::checkbox('pages['.$idx.'][og_title_use_common]', 1, $page->og_title_use_common, ['class' => 'use-common-checkbox'])}}
               {{Form::text('pages['.$idx.'][og_title]', $page->og_title, ['class' => 'form-control custom-form-inline'])}}
+              @if(isset($page->errors['og_title']))
+                <ul class="alert alert-danger" role="alert">
+                @foreach($page->errors['og_title'] as $historyDetail)
+                  <li>{{$historyDetail->message}}</li>
+                @endforeach
+                </ul>
+              @endif
             </td>
             <td>
               {{Form::checkbox('pages['.$idx.'][og_url_use_common]', 1, $page->og_url_use_common, ['class' => 'use-common-checkbox'])}}
               {{Form::text('pages['.$idx.'][og_url]', $page->og_url, ['class' => 'form-control custom-form-inline'])}}
+              @if(isset($page->errors['og_url']))
+                <ul class="alert alert-danger" role="alert">
+                @foreach($page->errors['og_url'] as $historyDetail)
+                  <li>{{$historyDetail->message}}</li>
+                @endforeach
+                </ul>
+              @endif
             </td>
             <td>
               {{Form::checkbox('pages['.$idx.'][og_image_use_common]', 1, $page->og_image_use_common, ['class' => 'use-common-checkbox'])}}
               {{Form::text('pages['.$idx.'][og_image]', $page->og_image, ['class' => 'form-control custom-form-inline'])}}
+              @if(isset($page->errors['og_image']))
+                <ul class="alert alert-danger" role="alert">
+                @foreach($page->errors['og_image'] as $historyDetail)
+                  <li>{{$historyDetail->message}}</li>
+                @endforeach
+                </ul>
+              @endif
             </td>
             <td>
               {{Form::checkbox('pages['.$idx.'][og_description_use_common]', 1, $page->og_description_use_common, ['class' => 'use-common-checkbox'])}}
               {{Form::text('pages['.$idx.'][og_description]', $page->og_description, ['class' => 'form-control custom-form-inline'])}}
+              @if(isset($page->errors['og_description']))
+                <ul class="alert alert-danger" role="alert">
+                @foreach($page->errors['og_description'] as $historyDetail)
+                  <li>{{$historyDetail->message}}</li>
+                @endforeach
+                </ul>
+              @endif
             </td>
             <td>
               {{Form::checkbox('pages['.$idx.'][favicon_use_common]', 1, $page->favicon_use_common, ['class' => 'use-common-checkbox'])}}
               {{Form::text('pages['.$idx.'][favicon]', $page->favicon, ['class' => 'form-control custom-form-inline'])}}
+              @if(isset($page->errors['favicon']))
+                <ul class="alert alert-danger" role="alert">
+                @foreach($page->errors['favicon'] as $historyDetail)
+                  <li>{{$historyDetail->message}}</li>
+                @endforeach
+                </ul>
+              @endif
             </td>
           </tr>
           <tr>
-            <td>
+            <td colspan="100">
               @if($checkHistories)
                 @foreach($checkHistories as $historyDetail)
                   @if($historyDetail->page_id === $page->id)
@@ -162,6 +223,9 @@
     </div>
   </div>
   {{Form::close()}}
+
+  {{Form::open(['route'=>'sitemap.check', 'method' => 'get', 'id' => 'check_page_form'])}}
+  {{Form::close()}}
 @endsection
 @section('scripts')
   <script>
@@ -171,7 +235,7 @@
     const $tableBody = document.getElementById('table_body');
     const template = `
       <td>{{Form::hidden('pages[?][id]', 'new')}}{{Form::text('pages[?][name]', null, ['class' => 'form-control'])}}</td>
-          <td>{{Form::text('pages[?][path]', null, ['class' => 'form-control'])}}</td>
+          <td class="cell-path">{{Form::text('pages[?][path]', null, ['class' => 'form-control'])}}</td>
           <td>
             {{Form::checkbox('pages[?][title_use_common]', 1, false, ['class' => 'use-common-checkbox'])}}
             {{Form::text('pages[?][title]', null, ['class' => 'form-control custom-form-inline'])}}
@@ -345,7 +409,9 @@
         }
         if (nextInput) nextInput.focus();
       }
+    });
 
+    document.addEventListener('DOMContentLoaded', function(){
       $('#table-pages').floatThead({
         position: 'fixed',
         responsiveContainer: function($table){
@@ -353,5 +419,10 @@
         }
       });
     });
+
+    document.querySelector('.exec-check-page').addEventListener('click', function(){
+      document.getElementById('check_page_form').submit();
+    })
+
   </script>
 @endsection

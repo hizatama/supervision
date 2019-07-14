@@ -17,7 +17,7 @@ class CreateSiteMapPagesTable extends Migration
       $table->bigIncrements('id');
       $table->string('path');
       $table->string('name')->nullable();
-      $table->string('title')->nullable();
+      $table->string('title')->nullable()->default('');
       $table->boolean('title_use_common')->default(false);
       $table->string('keywords')->nullable();
       $table->boolean('keywords_use_common')->default(true);

@@ -20,8 +20,26 @@
       padding: 0;
       position: relative;
       border-top: none;
+
+      &.cell-path {
+        position: relative;
+        &:before {
+          content: "/";
+          position: absolute;
+          top: 8px;
+          left: 8px;
+        }
+      }
+
+      .alert {
+        padding: 5px;
+        ul, li {
+          list-style-position: inside;
+        }
+      }
     }
   }
+
 
   input[type="text"] {
     font-size: inherit;

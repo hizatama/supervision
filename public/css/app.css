@@ -10669,6 +10669,26 @@ a.text-dark:focus {
   border-top: none;
 }
 
+.table--pages tbody td.cell-path {
+  position: relative;
+}
+
+.table--pages tbody td.cell-path:before {
+  content: "/";
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
+
+.table--pages tbody td .alert {
+  padding: 5px;
+}
+
+.table--pages tbody td .alert ul,
+.table--pages tbody td .alert li {
+  list-style-position: inside;
+}
+
 .table--pages input[type=text] {
   font-size: inherit;
   min-width: 180px;
@@ -10705,7 +10725,7 @@ a.text-dark:focus {
 }
 
 .sticky-footer__inner {
-  background-color: #666;
+  background-color: rgba(0, 0, 0, 0.75);
   position: fixed;
   bottom: 0;
   left: 0;
