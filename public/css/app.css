@@ -10649,6 +10649,18 @@ a.text-dark:focus {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
+body {
+  background-color: #fff;
+}
+
+.main-inner {
+  margin-top: 30px;
+}
+
+.main-tab-pane {
+  padding: 1em;
+}
+
 .table--pages-wrapper {
   width: 100%;
   overflow: auto;

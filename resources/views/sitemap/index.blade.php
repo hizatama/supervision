@@ -19,7 +19,6 @@
       @endif
     @endforeach
 
-    <h1>サイトマップ</h1>
     <ul class="nav nav-tabs">
       <li class="nav-item">
         <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings">共通設定</a>
@@ -27,9 +26,12 @@
       <li class="nav-item">
         <a class="nav-link active" id="pages-tab" data-toggle="tab" href="#pages">ページ一覧</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" id="output-tab" data-toggle="tab" href="#output">サイトマップ</a>
+      </li>
     </ul>
     <div class="tab-content">
-      <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+      <div class="tab-pane main-tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
         <h3>URL</h3>
         <table class="table table--headers table--fluid">
           <tr>
@@ -47,6 +49,10 @@
             <td>{{Form::text('sitemap[charset]', $siteMap->charset, ['id'=>'charset', 'class' => 'form-control'])}}</td>
             <th><label for="keywords">favicon</label></th>
             <td>{{Form::text('sitemap[favicon]', $siteMap->favicon, ['id'=>'favicon', 'class' => 'form-control'])}}</td>
+          </tr>
+          <tr>
+            <th><label for="keywords">title</label></th>
+            <td>{{Form::text('sitemap[title]', $siteMap->title, ['id'=>'title', 'class' => 'form-control'])}}</td>
           </tr>
           {{--        <tr>--}}
           {{--          <th><label for="title_prefix">title prefix</label></th>--}}
@@ -74,13 +80,9 @@
           </tr>
         </table>
       </div>
-      <div class="tab-pane fade show active" id="pages" role="tabpanel" aria-labelledby="pages-tab">
-        <div class="text-right mt-3">
-          {{Form::button('サイトマップ表示', ['class' => 'btn btn-secondary exec-view-sitemap'])}}
-          {{Form::button('ページチェックを実行', ['class' => 'btn btn-secondary exec-check-page'])}}
-        </div>
+      <div class="tab-pane main-tab-pane fade show active" id="pages" role="tabpanel" aria-labelledby="pages-tab">
         @if($isPassed)
-          <div class="alert alert-success mt-3" role="alert">エラーはありません</div>
+          <div class="alert alert-success" role="alert">エラーはありません</div>
         @endif
         <div class="table--pages-wrapper">
 
@@ -233,6 +235,33 @@
           <button type="button" id="add_row" class="btn btn-secondary">ページ追加</button>
         </div>
       </div>
+      <div class="tab-pane main-tab-pane fade" id="output" role="tabpanel" aria-labelledby="output-tab">
+        <div class="container">
+
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" id="vertical-tab" data-toggle="tab" href="#vertical">縦出力</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="horizontal-tab" data-toggle="tab" href="#horizontal">横出力</a>
+            </li>
+          </ul>
+
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="vertical" role="tabpanel" aria-labelledby="vertical-tab">
+              <ul class="tree-vertical root">
+                @include('sitemap.output-tree', ['pages' => $pageHierarchy])
+              </ul>
+            </div>
+            <div class="tab-pane fade" id="horizontal" role="tabpanel" aria-labelledby="horizontal-tab">
+              <ul class="tree-horizontal root">
+                @include('sitemap.output-tree-horizontal', ['pages' => $pageHierarchy])
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
   </div>
@@ -240,6 +269,8 @@
   <div class="sticky-footer is-fixed">
     <div class="sticky-footer__inner">
       <div class="text-right">
+        {{Form::button('サイトマップ表示', ['class' => 'btn btn-secondary exec-view-sitemap'])}}
+        {{Form::button('ページチェックを実行', ['class' => 'btn btn-secondary exec-check-page'])}}
         {{Form::submit('登録する', ['class'=>'btn btn-primary'])}}
       </div>
     </div>
@@ -261,7 +292,7 @@
     const $tableBody = document.getElementById('table_body');
     const template = `
       <td><div class="alert alert-info text-center">New</div></td>
-      <td>{{Form::hidden('pages[?][id]', 'new')}}{{Form::text('pages[?][name]', null, ['class' => 'form-control'])}}</td>
+      <td>{{Form::hidden('pages[?][id]', 'new')}}{{Form::text('pages[?][name]', null, ['class' => 'form-control', 'required' => 'required'])}}</td>
           <td class="cell-path">{{Form::text('pages[?][path]', null, ['class' => 'form-control'])}}</td>
           <td>
             {{Form::checkbox('pages[?][title_use_common]', 1, false, ['class' => 'use-common-checkbox'])}}
@@ -355,6 +386,7 @@
     }
 
     function getTopInput(currentIndex, currentKey) {
+      if(currentIndex < 0) return null;
       nextInput = document.querySelector('[name="pages[' + (Math.max(0, currentIndex - 1)) + '][' + currentKey + ']"]');
       if(nextInput) {
         return nextInput.disabled ? getTopInput(currentIndex-1, currentKey) : nextInput;

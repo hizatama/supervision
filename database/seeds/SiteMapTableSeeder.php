@@ -15,6 +15,7 @@ class SiteMapTableSeeder extends Seeder
         'url_production' => 'http://127.0.0.1:8080',
         'url_staging' => 'http://127.0.0.1:8888',
         'charset' => 'UTF-8',
+        'title' => '●●株式会社',
         'title_prefix' => '',
         'title_suffix' => '',
         'keywords' => 'Develop,Design,Hoge,Fuga',

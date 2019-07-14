@@ -18,6 +18,7 @@ class CreateSiteMapsTable extends Migration
       $table->string('url_production');
       $table->string('url_staging');
       $table->string('charset')->nullable();
+      $table->string('title')->nullable();
       $table->string('title_prefix')->nullable();
       $table->string('title_suffix')->nullable();
       $table->string('keywords')->nullable();
