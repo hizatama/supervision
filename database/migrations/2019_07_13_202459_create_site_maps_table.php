@@ -17,16 +17,16 @@ class CreateSiteMapsTable extends Migration
       $table->bigIncrements('id');
       $table->string('url_production');
       $table->string('url_staging');
-      $table->string('charset');
-      $table->string('title_prefix');
-      $table->string('title_suffix');
-      $table->string('keywords');
-      $table->string('description');
-      $table->string('og_title');
-      $table->string('og_url');
-      $table->string('og_description');
-      $table->string('og_image');
-      $table->string('favicon');
+      $table->string('charset')->nullable();
+      $table->string('title_prefix')->nullable();
+      $table->string('title_suffix')->nullable();
+      $table->string('keywords')->nullable();
+      $table->string('description')->nullable();
+      $table->string('og_title')->nullable();
+      $table->string('og_url')->nullable();
+      $table->string('og_description')->nullable();
+      $table->string('og_image')->nullable();
+      $table->string('favicon')->nullable();
       $table->timestamps();
     });
   }

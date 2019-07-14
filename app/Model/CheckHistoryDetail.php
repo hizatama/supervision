@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class CheckHistoryDetail extends Model
 {
-  protected $guarded = [];
+  protected $guarded = ['id'];
   public $table = 'check_history_detail';
 }

@@ -7,7 +7,18 @@
 @endsection
 @section('content')
   {{Form::open(['route'=>'sitemap.store', 'method' => 'post'])}}
-  <div class="container">
+  <div class="container-fluid">
+    @foreach($flashMessages as $flash)
+      @if($flash->key === 'system')
+        <div class="alert alert-{{$flash->type}} alert-dismissible fade show" role="alert">
+          {{$flash->message}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      @endif
+    @endforeach
+
     <h1>サイトマップ</h1>
     <section class="section section--url">
       <h2>共通設定</h2>
@@ -58,10 +69,10 @@
     </section>
 
     <h3>ページ一覧</h3>
-    @if($messages)
+    @if($checkHistories)
       <ul class="alert alert-danger" role="alert">
-      @foreach($messages as $msg)
-        <li>page{{$msg->page_id}} {{$msg->key}} :: {{$msg->message}}</li>
+      @foreach($checkHistories as $historyDetail)
+        <li>page{{$historyDetail->page_id}} {{$historyDetail->key}} :: {{$historyDetail->message}}</li>
       @endforeach
       </ul>
     @endif
@@ -141,7 +152,7 @@
     const $addRow = document.getElementById('add_row');
     const $tableBody = document.getElementById('table_body');
     const template = `
-      <td>{{Form::hidden('pages[?][id]', null)}}{{Form::text('pages[?][name]', null, ['class' => 'form-control'])}}</td>
+      <td>{{Form::hidden('pages[?][id]', 'new')}}{{Form::text('pages[?][name]', null, ['class' => 'form-control'])}}</td>
           <td>{{Form::text('pages[?][path]', null, ['class' => 'form-control'])}}</td>
           <td>
             {{Form::text('pages[?][title]', null, ['class' => 'form-control'])}}
@@ -178,8 +189,16 @@
       $tableBody.appendChild($newRow);
       lastIndex++;
 
+      $newRow.querySelectorAll('.use-common-checkbox').forEach((el)=>{
+        if(el.checked) {
+          applyCheckbox(el);
+        }
+      });
+
       const ne = new Event('resize');
       window.dispatchEvent(ne)
+
+      return $newRow;
     }
 
     function applyCheckbox(check) {
@@ -197,6 +216,35 @@
       }
     }
 
+    function getLeftInput(el) {
+      nextInput = el.parentNode.previousElementSibling;
+      if (nextInput) {
+        nextInput = nextInput.querySelector('input[type="text"]');
+        return nextInput.disabled ? getLeftInput(nextInput) : nextInput;
+      }
+      return null;
+    }
+
+    function getRightInput(el) {
+      nextInput = el.parentNode.nextElementSibling;
+      if (nextInput) {
+        nextInput = nextInput.querySelector('input[type="text"]');
+        return nextInput.disabled ? getRightInput(nextInput) : nextInput;
+      }
+      return null;
+    }
+
+    function isEmptyRow(row) {
+      const rowInputs = row.querySelectorAll('input[type="text"]');
+      let isEmptyRow = true;
+      rowInputs.forEach((el)=>{
+        if(!el.disabled && el.value.length > 0) {
+          isEmptyRow = false;
+        }
+      });
+      return isEmptyRow;
+    }
+
     document.querySelectorAll('.use-common-checkbox').forEach((el)=>{
       if(el.checked) {
         applyCheckbox(el);
@@ -206,7 +254,8 @@
     // ページ追加ボタン
     $addRow.addEventListener('click', function (e) {
       e.preventDefault();
-      addRow();
+      $addedRow = addRow();
+      $addedRow.querySelector('input[type="text"]').focus();
     });
 
     $tableBody.addEventListener('change', function (e) {
@@ -229,14 +278,7 @@
           const lastRow = $tableBody.querySelector('tr:last-child');
           const currentRow = e.target.parentElement.parentElement;
           if(lastRow === currentRow) {
-            const rowInputs = currentRow.querySelectorAll('input[type="text"]');
-            let isEmptyRow = true;
-            rowInputs.forEach((el)=>{
-              if(el.value.length > 0) {
-                isEmptyRow = false;
-              }
-            });
-            if(isEmptyRow) {
+            if(isEmptyRow(currentRow)) {
               currentRow.remove();
               lastIndex--;
             }
@@ -248,15 +290,13 @@
             nextInput = document.querySelector('[name="pages[' + (Math.min(lastIndex, currentIndex + 1)) + '][' + currentKey + ']"]');
           }
         } else if (e.key === 'ArrowLeft' && e.target.selectionStart === 0 && e.target.selectionEnd === 0) {
-          nextInput = e.target.parentNode.previousElementSibling;
+          nextInput = getLeftInput(e.target);
           if (nextInput) {
-            nextInput = nextInput.querySelector('input[type="text"]');
             nextInput.setSelectionRange(-1, -1);
           }
         } else if (e.key === 'ArrowRight' && e.target.selectionStart === e.target.value.length && e.target.selectionEnd === e.target.value.length) {
-          nextInput = e.target.parentNode.nextElementSibling;
+          nextInput = getRightInput(e.target);
           if (nextInput) {
-            nextInput = nextInput.querySelector('input[type="text"]');
             nextInput.setSelectionRange(0, 0);
           }
         }

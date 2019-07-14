@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class SiteMap extends Model
 {
-  protected $guarded = [];
+  protected $guarded = ['id'];
   public $table = 'site_maps';
 }

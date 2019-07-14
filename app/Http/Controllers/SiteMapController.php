@@ -16,22 +16,23 @@ class SiteMapController extends Controller
   /**
    * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
    */
-  private function viewIndex($addxData = [])
+  private function viewIndex($addeData = [])
   {
     $history = Model\CheckHistory::select()->orderByDesc('revision')->first();
 
-    $messages = [];
+    $checkHistories = [];
     if($history && !$history->is_passed) {
-      $messages = Model\CheckHistoryDetail::select()->where('history_id', '=', $history->id)->get();
+      $checkHistories = Model\CheckHistoryDetail::select()->where('history_id', $history->id)->get();
     }
 
     $data = [
       'siteMap' => Model\SiteMap::all()[0],
       'pages' => Model\SiteMapPage::all(),
-      'messages' => $messages ?: [],
+      'checkHistories' => $checkHistories,
+      'flashMessages' => $addeData['flashMessages'] ?? []
     ];
 
-    return view('sitemap.index', $data);
+    return view('sitemap.index', $data, $addeData);
   }
 
   /**
@@ -47,12 +48,62 @@ class SiteMapController extends Controller
    */
   public function store()
   {
-    return $this->check();
+    $postSiteMap = Request::all('sitemap');
+    $postPages = Request::all('pages');
+
+    $msg = new Model\ResultMessage;
+    $msg->key = 'system';
+
+    try {
+      DB::beginTransaction();
+      $siteMap = Model\SiteMap::all()->first();
+      if($siteMap instanceof Model\SiteMap) {
+        $siteMap->update($postSiteMap['sitemap']);
+
+        foreach ($postPages['pages'] as $postPage) {
+          $postPage = array_merge([
+            'title_use_common' => 0,
+            'keywords_use_common' => 0,
+            'description_use_common' => 0,
+            'og_title_use_common' => 0,
+            'og_url_use_common' => 0,
+            'og_description_use_common' => 0,
+            'og_image_use_common' => 0,
+            'favicon_use_common' => 0,
+          ], $postPage);
+
+          if($postPage['id'] === 'new') {
+            unset($postPage['id']);
+            $page = new Model\SiteMapPage($postPage);
+            $page->save();
+          } else {
+            $page = Model\SiteMapPage::find((int)$postPage['id']);
+            $page->update($postPage);
+            $page->save();
+          }
+        }
+      }
+      DB::commit();
+
+      $msg->type = 'success';
+      $msg->message = '更新完了しました';
+
+    } catch (\Exception $e) {
+      dump($e);
+      DB::rollBack();
+
+      $msg->type = 'error';
+      $msg->message = '更新失敗しました';
+    }
+
+    return $this->viewIndex([
+      'flashMessages' => [$msg]
+    ]);
   }
 
   protected function makeErrorMessage($key, $message)
   {
-    $msg = new Model\CheckResultMessage;
+    $msg = new Model\ResultMessage;
     $msg->key = $key;
     $msg->type = 'error';
     $msg->message = $message;
@@ -150,7 +201,7 @@ class SiteMapController extends Controller
         if ($result instanceof \HtmlValidator\Response && $result->hasMessages()) {
           foreach ($result->getMessages() as /* @var \HtmlValidator\Message */$message) {
             if (!in_array($message->getType(), ['error', 'warning'])) continue;
-            $msg = new Model\CheckResultMessage;
+            $msg = new Model\ResultMessage;
             $msg->key = 'html';
             $msg->type = $message->getType();
             $msg->message = $message->getText();
@@ -158,7 +209,7 @@ class SiteMapController extends Controller
           }
         }
       } catch (ServerException $e) {
-        $msg = new Model\CheckResultMessage;
+        $msg = new Model\ResultMessage;
         $msg->key = 'html';
         $msg->type = 'error';
         $msg->message = 'HTMLの解析に失敗しました';
@@ -170,7 +221,7 @@ class SiteMapController extends Controller
 
       if(!empty($messages)) {
         $hasError = true;
-        foreach ($messages as /* @var Model\CheckResultMessage */ $msg) {
+        foreach ($messages as /* @var Model\ResultMessage */ $msg) {
           // TODO history_detail 作成
           $historyDetail = new Model\CheckHistoryDetail([
             'history_id' => $history->id,

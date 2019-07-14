@@ -10657,6 +10657,10 @@ a.text-dark:focus {
   font-size: 11px;
 }
 
+.table--pages tbody td {
+  padding: 5px 0;
+}
+
 .table--pages input[type=text] {
   font-size: inherit;
   min-width: 180px;
