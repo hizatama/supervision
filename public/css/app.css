@@ -10682,10 +10682,7 @@ a.text-dark:focus {
 
 .table--pages tbody td .alert {
   padding: 5px;
-}
-
-.table--pages tbody td .alert ul,
-.table--pages tbody td .alert li {
+  margin-bottom: 5px;
   list-style-position: inside;
 }
 

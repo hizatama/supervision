@@ -21,10 +21,13 @@ class SiteMapPagesTableSeeder extends Seeder
         'description_use_common' => false,
         'description' => '●●株式会社はあれをあれしている会社です',
         'og_title_use_common' => true,
+        'og_title' => null,
         'og_url_use_common' => true,
+        'og_url' => null,
         'og_description_use_common' => true,
         'og_image_use_common' => true,
         'favicon_use_common' => true,
+        'charset_use_common' => true,
       ],
       [
         'path' => 'about.html',
@@ -34,11 +37,14 @@ class SiteMapPagesTableSeeder extends Seeder
         'keywords_use_common' => true,
         'description' => '●●株式会社の会社概要です',
         'description_use_common' => false,
-        'og_title_use_common' => true,
-        'og_url_use_common' => true,
+        'og_title_use_common' => false,
+        'og_title' => '会社概要',
+        'og_url_use_common' => false,
+        'og_url' => 'http://localhost:8080/about.html',
         'og_description_use_common' => true,
         'og_image_use_common' => true,
         'favicon_use_common' => true,
+        'charset_use_common' => true,
       ]
     ]);
   }

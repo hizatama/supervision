@@ -40,6 +40,7 @@ class SiteMapController extends Controller
     $data = [
       'siteMap' => Model\SiteMap::all()[0],
       'pages' => $pages,
+      'isPassed' => $history && $history->is_passed,
       'checkHistories' => $checkHistories,
       'flashMessages' => $addeData['flashMessages'] ?? []
     ];
@@ -96,16 +97,18 @@ class SiteMapController extends Controller
             'og_description_use_common' => 0,
             'og_image_use_common' => 0,
             'favicon_use_common' => 0,
+            'charset_use_common' => 0,
           ], $postPage);
 
-          if ($postPage['id'] === 'new') {
-            unset($postPage['id']);
+          $pageId = $postPage['id'];
+          unset($postPage['id']);
+          if ($pageId === 'new') {
             $page = new Model\SiteMapPage($postPage);
             $page->save();
           } else {
-            $page = Model\SiteMapPage::find((int)$postPage['id']);
+            $page = Model\SiteMapPage::find((int)$pageId);
             $page->update($postPage);
-            $page->save();
+//            $page->save();
           }
         }
       }
@@ -191,12 +194,13 @@ class SiteMapController extends Controller
   private function validateHead(\PHPHtmlParser\Dom $parser, Model\SiteMap $siteMap, Model\SiteMapPage $page)
   {
     $pageHead = new Model\PageHead;
+    $messages = [];
 
     // title
     $pageHead->title = $parser->find('title')[0]->innerHtml;
     $title = $page->title_use_common ? $siteMap->title : $page->title;
     if ($title !== $pageHead->title) {
-      $messages[] = $this->makeErrorMessage('title', 'titleが異なります（' . $title . '）');
+      $messages[] = $this->makeErrorMessage('title', 'titleが異なります（' . $pageHead->title . '）');
     }
 
     // charset
@@ -207,8 +211,9 @@ class SiteMapController extends Controller
       }
     }
     $pageHead->charset = $charset;
-    if ($siteMap->charset !== $pageHead->charset) {
-      $messages[] = $this->makeErrorMessage('charset', 'charsetが異なります');
+    $charset = $page->charset_use_common ? $siteMap->charset : $page->charset;
+    if ($charset !== $pageHead->charset) {
+      $messages[] = $this->makeErrorMessage('charset', 'charsetが異なります（' . $pageHead->charset . '）');
     }
 
     // keywords
@@ -250,20 +255,11 @@ class SiteMapController extends Controller
     return $messages;
   }
 
-
-  protected function checkPage(Model\SiteMapPage $page)
-  {
-
-  }
-
   public function check()
   {
     $siteMap = Model\SiteMap::all()[0];
     $pages = Model\SiteMapPage::orderBy('path')->get();
 
-//    $postSiteMap = Request::all('sitemap');
-//    $postPages = Request::all('pages');
-//    $siteMap = new Model\SiteMap($postSiteMap['sitemap']);
     $validator = new \HtmlValidator\Validator;
     $parser = new \PHPHtmlParser\Dom;
 
@@ -275,11 +271,11 @@ class SiteMapController extends Controller
     ]);
     $history->save();
 
+    $hasError = false;
     foreach ($pages as $page) {
 //      $page = new Model\SiteMapPage($postPage);
-      $this->checkPage($page);
 
-      $messages = [];
+      $errorMessages = [];
 
       // parse DOM
       $content = file_get_contents(rtrim($siteMap->url_production, '/') . '/' . ltrim($page->path, '/'));
@@ -291,7 +287,7 @@ class SiteMapController extends Controller
 //      $pageInfo->path = $page->path;
 //      $pageInfo->h1 = $parser->find('h1')[0]->innerHtml;
 
-      $messages = array_merge($messages, $this->validateHead($parser, $siteMap, $page));
+      $errorMessages = array_merge($errorMessages, $this->validateHead($parser, $siteMap, $page));
 
       // W3C validation HTML
       // https://validator.nu/?doc=https://google.co.jp/&out=json
@@ -305,7 +301,7 @@ class SiteMapController extends Controller
             $msg->key = 'html';
             $msg->type = $message->getType();
             $msg->message = $message->getText();
-            $messages[] = $msg;
+            $errorMessages[] = $msg;
           }
         }
       } catch (ServerException $e) {
@@ -313,15 +309,15 @@ class SiteMapController extends Controller
         $msg->key = 'html';
         $msg->type = 'error';
         $msg->message = 'HTMLの解析に失敗しました';
-        $messages[] = $msg;
+        $errorMessages[] = $msg;
       }
 
       // TODO W3C validation CSS
       // TODO ESLint
 
-      if (!empty($messages)) {
+      if (!empty($errorMessages)) {
         $hasError = true;
-        foreach ($messages as /* @var Model\ResultMessage */ $msg) {
+        foreach ($errorMessages as /* @var Model\ResultMessage */ $msg) {
           // TODO history_detail 作成
           $historyDetail = new Model\CheckHistoryDetail([
             'history_id' => $history->id,
@@ -336,11 +332,10 @@ class SiteMapController extends Controller
     }
 
     if ($hasError) {
-      $history->update([
-        'is_passed' => false
-      ]);
+      $history->is_passed = false;
+      $history->save();
     }
 
-    return $this->viewIndex();
+    return redirect()->route('sitemap.index');
   }
 }
