@@ -6,6 +6,7 @@
  */
 
 require('./bootstrap');
+require('floatthead');
 require('./components/sticky-footer');
 
 // window.Vue = require('vue');

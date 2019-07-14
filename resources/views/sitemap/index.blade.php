@@ -24,7 +24,7 @@
       <h2>共通設定</h2>
 
       <h3>URL</h3>
-      <table class="table table--pages table--fluid">
+      <table class="table table--headers table--fluid">
         <tr>
           <th><label for="url_production">本番環境</label></th>
           <td>{{Form::text('sitemap[url_production]', $siteMap->url_production, ['id'=>'url_production', 'class' => 'form-control'])}}</td>
@@ -34,7 +34,7 @@
       </table>
 
       <h3>meta</h3>
-      <table class="table table--pages table--fluid">
+      <table class="table table--headers table--fluid">
         <tr>
           <th><label for="keywords">charset</label></th>
           <td>{{Form::text('sitemap[charset]', $siteMap->charset, ['id'=>'charset', 'class' => 'form-control'])}}</td>
@@ -76,61 +76,79 @@
       @endforeach
       </ul>
     @endif
-    <table class="table table--pages">
-      <thead>
-      <tr>
-        <th rowspan="2">ページタイトル</th>
-        <th rowspan="2">パス</th>
-        <th colspan="7">meta</th>
-        <th rowspan="2">CHECK</th>
-      </tr>
-      <tr>
-        <th>title</th>
-        <th>keywords</th>
-        <th>description</th>
-        <th>og:title</th>
-        <th>og:url</th>
-        <th>og:image</th>
-        <th>og:description</th>
-      </tr>
-      </thead>
-      <tbody id="table_body">
-      @foreach($pages as $idx => $page)
+    <div class="table--pages-wrapper">
+
+      <table class="table table--pages table-fixed" id="table-pages">
+        <thead>
         <tr>
-          <td>{{Form::hidden('pages['.$idx.'][id]', $page->id)}}{{Form::text('pages['.$idx.'][name]', $page->name, ['class' => 'form-control'])}}</td>
-          <td>{{Form::text('pages['.$idx.'][path]', $page->path, ['class' => 'form-control'])}}</td>
-          <td>
-            {{Form::text('pages['.$idx.'][title]', $page->title, ['class' => 'form-control'])}}
-            <label>{{Form::checkbox('pages['.$idx.'][title_use_common]', 1, $page->title_use_common, ['class' => 'use-common-checkbox'])}}共通設定を使用する</label>
-          </td>
-          <td>
-            {{Form::text('pages['.$idx.'][keywords]', $page->keywords, ['class' => 'form-control custom-form-inline'])}}
-            <label>{{Form::checkbox('pages['.$idx.'][keywords_use_common]', 1, $page->keywords_use_common, ['class' => 'use-common-checkbox'])}}共通設定を使用する</label>
-          </td>
-          <td>
-            {{Form::text('pages['.$idx.'][description]', $page->description, ['class' => 'form-control custom-form-inline'])}}
-            <label>{{Form::checkbox('pages['.$idx.'][description_use_common]', 1, $page->description_use_common, ['class' => 'use-common-checkbox'])}}共通設定を使用する</label>
-          </td>
-          <td>
-            {{Form::text('pages['.$idx.'][og_title]', $page->og_title, ['class' => 'form-control'])}}
-            <label>{{Form::checkbox('pages['.$idx.'][og_title_use_common]', 1, $page->og_title_use_common, ['class' => 'use-common-checkbox'])}}共通設定を使用する</label>
-          </td>
-          <td>
-            {{Form::text('pages['.$idx.'][og_url]', $page->og_url, ['class' => 'form-control'])}}
-            <label>{{Form::checkbox('pages['.$idx.'][og_url_use_common]', 1, $page->og_url_use_common, ['class' => 'use-common-checkbox'])}}共通設定を使用する</label>
-          </td>
-          <td>
-            {{Form::text('pages['.$idx.'][og_image]', $page->og_image, ['class' => 'form-control'])}}
-            <label>{{Form::checkbox('pages['.$idx.'][og_image_use_common]', 1, $page->og_image_use_common, ['class' => 'use-common-checkbox'])}}共通設定を使用する</label>
-          </td>
-          <td>
-            {{Form::text('pages['.$idx.'][og_description]', $page->og_description, ['class' => 'form-control'])}}
-            <label>{{Form::checkbox('pages['.$idx.'][og_description_use_common]', 1, $page->og_description_use_common, ['class' => 'use-common-checkbox'])}}共通設定を使用する</label>
-          </td>
+          <th rowspan="2">ページタイトル</th>
+          <th rowspan="2">パス</th>
+          <th colspan="8">meta</th>
         </tr>
-      @endforeach
-      </tbody>
-    </table>
+        <tr>
+          <th>title</th>
+          <th>keywords</th>
+          <th>description</th>
+          <th>og:title</th>
+          <th>og:url</th>
+          <th>og:image</th>
+          <th>og:description</th>
+          <th>favicon</th>
+        </tr>
+        </thead>
+        <tbody id="table_body">
+        @foreach($pages as $idx => $page)
+          <tr>
+            <td>{{Form::hidden('pages['.$idx.'][id]', $page->id)}}{{Form::text('pages['.$idx.'][name]', $page->name, ['class' => 'form-control', 'required' => 'required'])}}</td>
+            <td>{{Form::text('pages['.$idx.'][path]', $page->path, ['class' => 'form-control', 'required' => 'required'])}}</td>
+            <td>
+              {{Form::checkbox('pages['.$idx.'][title_use_common]', 1, $page->title_use_common, ['class' => 'use-common-checkbox'])}}
+              {{Form::text('pages['.$idx.'][title]', $page->title, ['class' => 'form-control custom-form-inline'])}}
+            </td>
+            <td>
+              {{Form::checkbox('pages['.$idx.'][keywords_use_common]', 1, $page->keywords_use_common, ['class' => 'use-common-checkbox'])}}
+              {{Form::text('pages['.$idx.'][keywords]', $page->keywords, ['class' => 'form-control custom-form-inline'])}}
+            </td>
+            <td>
+              {{Form::checkbox('pages['.$idx.'][description_use_common]', 1, $page->description_use_common, ['class' => 'use-common-checkbox'])}}
+              {{Form::text('pages['.$idx.'][description]', $page->description, ['class' => 'form-control custom-form-inline'])}}
+            </td>
+            <td>
+              {{Form::checkbox('pages['.$idx.'][og_title_use_common]', 1, $page->og_title_use_common, ['class' => 'use-common-checkbox'])}}
+              {{Form::text('pages['.$idx.'][og_title]', $page->og_title, ['class' => 'form-control custom-form-inline'])}}
+            </td>
+            <td>
+              {{Form::checkbox('pages['.$idx.'][og_url_use_common]', 1, $page->og_url_use_common, ['class' => 'use-common-checkbox'])}}
+              {{Form::text('pages['.$idx.'][og_url]', $page->og_url, ['class' => 'form-control custom-form-inline'])}}
+            </td>
+            <td>
+              {{Form::checkbox('pages['.$idx.'][og_image_use_common]', 1, $page->og_image_use_common, ['class' => 'use-common-checkbox'])}}
+              {{Form::text('pages['.$idx.'][og_image]', $page->og_image, ['class' => 'form-control custom-form-inline'])}}
+            </td>
+            <td>
+              {{Form::checkbox('pages['.$idx.'][og_description_use_common]', 1, $page->og_description_use_common, ['class' => 'use-common-checkbox'])}}
+              {{Form::text('pages['.$idx.'][og_description]', $page->og_description, ['class' => 'form-control custom-form-inline'])}}
+            </td>
+            <td>
+              {{Form::checkbox('pages['.$idx.'][favicon_use_common]', 1, $page->favicon_use_common, ['class' => 'use-common-checkbox'])}}
+              {{Form::text('pages['.$idx.'][favicon]', $page->favicon, ['class' => 'form-control custom-form-inline'])}}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              @if($checkHistories)
+                @foreach($checkHistories as $historyDetail)
+                  @if($historyDetail->page_id === $page->id)
+                    {{$historyDetail->key}} :: {{$historyDetail->message}}</li>
+                  @endif
+                @endforeach
+              @endif
+            </td>
+          </tr>
+        @endforeach
+        </tbody>
+      </table>
+    </div>
     <div class="text-center">
       <button type="button" id="add_row" class="btn btn-secondary">ページ追加</button>
     </div>
@@ -155,33 +173,38 @@
       <td>{{Form::hidden('pages[?][id]', 'new')}}{{Form::text('pages[?][name]', null, ['class' => 'form-control'])}}</td>
           <td>{{Form::text('pages[?][path]', null, ['class' => 'form-control'])}}</td>
           <td>
-            {{Form::text('pages[?][title]', null, ['class' => 'form-control'])}}
-      <label>{{Form::checkbox('pages[?][title_use_common]', 1, false, ['class' => 'use-common-checkbox'])}}共通設定を使用する</label>
+            {{Form::checkbox('pages[?][title_use_common]', 1, false, ['class' => 'use-common-checkbox'])}}
+            {{Form::text('pages[?][title]', null, ['class' => 'form-control custom-form-inline'])}}
           </td>
           <td>
+            {{Form::checkbox('pages[?][keywords_use_common]', 1, true, ['class' => 'use-common-checkbox'])}}
             {{Form::text('pages[?][keywords]', null, ['class' => 'form-control custom-form-inline'])}}
-      <label>{{Form::checkbox('pages[?][keywords_use_common]', 1, true, ['class' => 'use-common-checkbox'])}}共通設定を使用する</label>
           </td>
           <td>
+            {{Form::checkbox('pages[?][description_use_common]', 1, false, ['class' => 'use-common-checkbox'])}}
             {{Form::text('pages[?][description]', null, ['class' => 'form-control custom-form-inline'])}}
-      <label>{{Form::checkbox('pages[?][description_use_common]', 1, false, ['class' => 'use-common-checkbox'])}}共通設定を使用する</label>
           </td>
           <td>
-            {{Form::text('pages[?][og_title]', null, ['class' => 'form-control'])}}
-      <label>{{Form::checkbox('pages[?][og_title_use_common]', 1, true, ['class' => 'use-common-checkbox'])}}共通設定を使用する</label>
+            {{Form::checkbox('pages[?][og_title_use_common]', 1, true, ['class' => 'use-common-checkbox'])}}
+            {{Form::text('pages[?][og_title]', null, ['class' => 'form-control custom-form-inline'])}}
           </td>
           <td>
-            {{Form::text('pages[?][og_url]', null, ['class' => 'form-control'])}}
-      <label>{{Form::checkbox('pages[?][og_url_use_common]', 1, true, ['class' => 'use-common-checkbox'])}}共通設定を使用する</label>
+            {{Form::checkbox('pages[?][og_url_use_common]', 1, true, ['class' => 'use-common-checkbox'])}}
+            {{Form::text('pages[?][og_url]', null, ['class' => 'form-control custom-form-inline'])}}
           </td>
           <td>
-            {{Form::text('pages[?][og_image]', null, ['class' => 'form-control'])}}
-      <label>{{Form::checkbox('pages[?][og_image_use_common]', 1, true, ['class' => 'use-common-checkbox'])}}共通設定を使用する</label>
+            {{Form::checkbox('pages[?][og_image_use_common]', 1, true, ['class' => 'use-common-checkbox'])}}
+            {{Form::text('pages[?][og_image]', null, ['class' => 'form-control custom-form-inline'])}}
           </td>
           <td>
-            {{Form::text('pages[?][og_description]', null, ['class' => 'form-control'])}}
-      <label>{{Form::checkbox('pages[?][og_description_use_common]', 1, true, ['class' => 'use-common-checkbox'])}}共通設定を使用する</label>
-          </td>`;
+            {{Form::checkbox('pages[?][og_description_use_common]', 1, true, ['class' => 'use-common-checkbox'])}}
+            {{Form::text('pages[?][og_description]', null, ['class' => 'form-control custom-form-inline'])}}
+          </td>
+          <td>
+            {{Form::checkbox('pages[?][favicon_use_common]', 1, true, ['class' => 'use-common-checkbox'])}}
+            {{Form::text('pages[?][favicon]', null, ['class' => 'form-control custom-form-inline'])}}
+          </td>
+          `;
 
     function addRow() {
       const $newRow = document.createElement('tr');
@@ -196,13 +219,13 @@
       });
 
       const ne = new Event('resize');
-      window.dispatchEvent(ne)
+      window.dispatchEvent(ne);
 
       return $newRow;
     }
 
     function applyCheckbox(check) {
-      const el = check.parentElement.previousElementSibling;
+      const el = check.nextElementSibling;
 
       if(check.checked) {
         // 共通設定を使用する場合
@@ -230,6 +253,22 @@
       if (nextInput) {
         nextInput = nextInput.querySelector('input[type="text"]');
         return nextInput.disabled ? getRightInput(nextInput) : nextInput;
+      }
+      return null;
+    }
+
+    function getTopInput(currentIndex, currentKey) {
+      nextInput = document.querySelector('[name="pages[' + (Math.max(0, currentIndex - 1)) + '][' + currentKey + ']"]');
+      if(nextInput) {
+        return nextInput.disabled ? getTopInput(currentIndex-1, currentKey) : nextInput;
+      }
+      return null;
+    }
+
+    function getBottomInput(currentIndex, currentKey) {
+      nextInput = document.querySelector('[name="pages[' + (Math.min(lastIndex, currentIndex + 1)) + '][' + currentKey + ']"]');
+      if(nextInput) {
+        return nextInput.disabled ? getBottomInput(currentIndex + 1, currentKey) : nextInput;
       }
       return null;
     }
@@ -272,7 +311,7 @@
         const currentKey = matches[2];
         let nextInput;
         if (e.key === 'ArrowUp') {
-          nextInput = document.querySelector('[name="pages[' + (Math.max(0, currentIndex - 1)) + '][' + currentKey + ']"]');
+          nextInput = getTopInput(currentIndex, currentKey);
 
           // 最後の行から移動した時、空行なら削除する
           const lastRow = $tableBody.querySelector('tr:last-child');
@@ -284,24 +323,35 @@
             }
           }
         } else if (e.key === 'ArrowDown') {
-          nextInput = document.querySelector('[name="pages[' + (Math.min(lastIndex, currentIndex + 1)) + '][' + currentKey + ']"]');
+          nextInput = getBottomInput(currentIndex, currentKey);
           if (!nextInput) {
             addRow();
-            nextInput = document.querySelector('[name="pages[' + (Math.min(lastIndex, currentIndex + 1)) + '][' + currentKey + ']"]');
+            nextInput = getBottomInput(currentIndex, currentKey);
           }
         } else if (e.key === 'ArrowLeft' && e.target.selectionStart === 0 && e.target.selectionEnd === 0) {
           nextInput = getLeftInput(e.target);
           if (nextInput) {
-            nextInput.setSelectionRange(-1, -1);
+            setTimeout(()=>{
+              nextInput.setSelectionRange(-1, -1);
+            }, 10);
           }
         } else if (e.key === 'ArrowRight' && e.target.selectionStart === e.target.value.length && e.target.selectionEnd === e.target.value.length) {
           nextInput = getRightInput(e.target);
           if (nextInput) {
-            nextInput.setSelectionRange(0, 0);
+            setTimeout(()=>{
+              nextInput.setSelectionRange(0, 0);
+            }, 10);
           }
         }
         if (nextInput) nextInput.focus();
       }
+
+      $('#table-pages').floatThead({
+        position: 'fixed',
+        responsiveContainer: function($table){
+          return $table.closest('.table--pages-wrapper');
+        }
+      });
     });
   </script>
 @endsection

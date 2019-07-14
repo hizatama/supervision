@@ -27,7 +27,7 @@ class SiteMapController extends Controller
 
     $data = [
       'siteMap' => Model\SiteMap::all()[0],
-      'pages' => Model\SiteMapPage::all(),
+      'pages' => Model\SiteMapPage::orderBy('path')->get(),
       'checkHistories' => $checkHistories,
       'flashMessages' => $addeData['flashMessages'] ?? []
     ];

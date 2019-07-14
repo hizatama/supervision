@@ -3,21 +3,45 @@
 // =============================================
 .table--pages {
 
+  &-wrapper {
+    width: 100%;
+    overflow: auto;
+  }
+
   thead {
     font-size: 12px;
+    background-color: #f5f8fb;
   }
+
   tbody {
     font-size: 11px;
 
     td {
-      padding: 5px 0;
+      padding: 0;
+      position: relative;
+      border-top: none;
     }
   }
 
   input[type="text"] {
     font-size: inherit;
     min-width: 180px;
+    border-radius: 0;
+
+    &.custom-form-inline {
+      padding-left: 25px;
+    }
   }
+
+  .use-common-checkbox {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+  }
+}
+
+.table--headers {
+  max-width: 1000px;
 }
 
 .table--fluid {
