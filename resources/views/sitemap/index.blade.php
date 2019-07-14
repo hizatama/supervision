@@ -73,9 +73,8 @@
       <div class="alert alert-success" role="alert">エラーはありません</div>
     @endif
     <div class="text-right">
-      {{Form::button('ページチェックを実行', [
-        'class' => 'btn btn-secondary exec-check-page',
-        ])}}
+      {{Form::button('サイトマップ表示', ['class' => 'btn btn-secondary exec-view-sitemap'])}}
+      {{Form::button('ページチェックを実行', ['class' => 'btn btn-secondary exec-check-page'])}}
     </div>
     <div class="table--pages-wrapper">
 
@@ -233,6 +232,9 @@
   {{Form::close()}}
 
   {{Form::open(['route'=>'sitemap.check', 'method' => 'get', 'id' => 'check_page_form'])}}
+  {{Form::close()}}
+
+  {{Form::open(['route'=>'sitemap.output', 'method' => 'get', 'id' => 'sitemap_form', 'target' => '_blank'])}}
   {{Form::close()}}
 @endsection
 @section('scripts')
@@ -436,6 +438,13 @@
       e.preventDefault();
       if(confirm('入力されたデータは保存されません。\nページチェック実行前に保存してください。')) {
         document.getElementById('check_page_form').submit();
+      }
+    });
+
+    document.querySelector('.exec-view-sitemap').addEventListener('click', function(e){
+      e.preventDefault();
+      if(confirm('入力されたデータは保存されません。\nサイトマップ出力前に保存してください。')) {
+        document.getElementById('sitemap_form').submit();
       }
     });
 

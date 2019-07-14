@@ -10714,6 +10714,84 @@ a.text-dark:focus {
   width: 100%;
 }
 
+.tree {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.node {
+  position: relative;
+  padding: 5px 0;
+}
+
+.node-item {
+  border: 1px solid #999;
+  padding: 5px 10px;
+  width: 180px;
+}
+
+.node::before,
+.node::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  background-color: #333;
+}
+
+.node::before {
+  width: 20px;
+  height: 2px;
+  top: 50%;
+  left: -20px;
+  margin-top: -1px;
+}
+
+.node::after {
+  width: 2px;
+  height: 100%;
+  bottom: 0;
+  left: -20px;
+}
+
+.root > .node::before,
+.root > .node::after {
+  display: none;
+}
+
+.node:last-child::after {
+  height: 50%;
+  bottom: 50%;
+}
+
+.node:first-child::after {
+  height: calc(100% + 5px);
+}
+
+.child {
+  position: relative;
+  padding-left: 40px;
+}
+
+.child::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  background-color: #333;
+}
+
+.child::after {
+  width: 2px;
+  height: 100%;
+  top: 0;
+  left: -20px;
+}
+
+.root > .child::before,
+.root > .child::after {
+  display: none;
+}
+
 .sticky-footer {
   position: relative;
   width: 100%;

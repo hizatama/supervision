@@ -1,0 +1,98 @@
+// =============================================
+// table
+// =============================================
+
+$tree-indent: 40px;
+$node-padding-vertical: 5px;
+
+.tree {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.node {
+  position: relative;
+  padding: $node-padding-vertical 0;
+
+  // アイテム -------------------------------
+  &-item {
+    border: 1px solid #999;
+    padding: 5px 10px;
+    width: 180px;
+  }
+
+
+  // 線 -------------------------------
+  &::before,
+  &::after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    background-color: #333;
+  }
+
+  &::before {
+    width: $tree-indent / 2;
+    height: 2px;
+    top: 50%;
+    left: -$tree-indent / 2;
+    margin-top: -1px;
+  }
+
+  &::after {
+    width: 2px;
+    height: 100%;
+    bottom: 0;
+    left: -$tree-indent / 2;
+  }
+
+  //ルート直下
+  .root > & {
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+
+  // last-child
+  &:last-child {
+    &::after {
+      height: 50%;
+      bottom: 50%;
+    }
+  }
+
+  // first-child
+  &:first-child {
+    &::after {
+      height: calc(100% + #{$node-padding-vertical});
+    }
+  }
+
+}
+
+.child {
+  position: relative;
+  padding-left: $tree-indent;
+
+  &::after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    background-color: #333;
+  }
+  &::after {
+    width: 2px;
+    height: 100%;
+    top: 0;
+    left: -$tree-indent / 2;
+  }
+
+  .root > & {
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+}

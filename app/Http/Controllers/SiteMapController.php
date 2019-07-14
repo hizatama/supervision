@@ -338,4 +338,43 @@ class SiteMapController extends Controller
 
     return redirect()->route('sitemap.index');
   }
+
+  public function output()
+  {
+    $pages = Model\SiteMapPage::orderBy('path')->get();
+    return view('sitemap.output', [
+      'pages' => $this->makePagesHierarchy($pages)
+    ]);
+  }
+
+  private function makePagesHierarchy($pages)
+  {
+    $data = [];
+
+    $data = [
+      [
+        'title' => 'TOP',
+        'path' => '/',
+        'children' => [
+          ['title' => '子供1',
+            'path' => '/',
+            'children' => []],
+          ['title' => '子供2',
+            'path' => '/',
+            'children' => [
+              ['title' => '孫1',
+                'path' => '/',
+                'children' => []],
+              ['title' => '孫1',
+                'path' => '/',
+                'children' => []]
+            ]],
+          ['title' => '子供3',
+            'path' => '/',
+            'children' => []]
+        ]
+      ]
+    ];
+    return $data;
+  }
 }
