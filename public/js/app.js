@@ -37058,7 +37058,7 @@ if (token) {
   document.addEventListener('DOMContentLoaded', function () {
     $wrapper = document.querySelector('.sticky-footer');
     $inner = document.querySelector('.sticky-footer__inner');
-    registerEventListeners();
+    if ($wrapper && $inner) registerEventListeners();
   });
 })();
 

@@ -2,7 +2,7 @@
   <li class="node"><div class="node-item">{{$page['title']}}</div></li>
   @if(count($page['children']))
     <li class="child">
-      <ul class="tree">
+      <ul class="tree-vertical">
         @include('sitemap.output-tree', ['pages' => $page['children']])
       </ul>
     </li>

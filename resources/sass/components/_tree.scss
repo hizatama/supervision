@@ -5,11 +5,9 @@
 $tree-indent: 40px;
 $node-padding-vertical: 5px;
 
-.tree {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+// -------------------------------
+// common - node
+// -------------------------------
 
 .node {
   position: relative;
@@ -22,7 +20,6 @@ $node-padding-vertical: 5px;
     width: 180px;
   }
 
-
   // 線 -------------------------------
   &::before,
   &::after {
@@ -31,68 +28,158 @@ $node-padding-vertical: 5px;
     position: absolute;
     background-color: #333;
   }
+}
 
-  &::before {
-    width: $tree-indent / 2;
-    height: 2px;
-    top: 50%;
-    left: -$tree-indent / 2;
-    margin-top: -1px;
+// -------------------------------
+// tree-vertical
+// -------------------------------
+.tree-vertical {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  .node {
+    // 線 -------------------------------
+    &::before {
+      width: $tree-indent / 2;
+      height: 2px;
+      top: 50%;
+      left: -$tree-indent / 2;
+      margin-top: -1px;
+    }
+
+    &::after {
+      width: 2px;
+      height: 100%;
+      bottom: 0;
+      left: -$tree-indent / 2;
+    }
+
+    // last-child
+    &:last-child {
+      &::after {
+        height: 50%;
+        bottom: 50%;
+      }
+    }
+
+    // first-child
+    &:first-child {
+      &::after {
+        height: calc(100% + #{$node-padding-vertical});
+      }
+    }
+
+    // first-child
+    &:first-child:last-child {
+      &::after {
+        height: calc(50% + #{$node-padding-vertical});
+        bottom: 50%;
+      }
+    }
   }
 
-  &::after {
-    width: 2px;
-    height: 100%;
-    bottom: 0;
-    left: -$tree-indent / 2;
+  .child {
+    position: relative;
+    padding-left: $tree-indent;
+
+    &::after {
+      content: "";
+      display: inline-block;
+      position: absolute;
+      background-color: #333;
+    }
+
+    &::after {
+      width: 2px;
+      height: 100%;
+      top: 0;
+      left: -$tree-indent / 2;
+    }
+  }
+
+
+  //ルート直下
+  &.root{
+    > .node,
+    > .child {
+      &::before,
+      &::after {
+        display: none;
+      }
+    }
+  }
+}
+
+// -------------------------------
+// tree-horizontal
+// -------------------------------
+.tree-horizontal {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  .node {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+
+    // 線 -------------------------------
+    &::before {
+      width: $tree-indent / 2;
+      height: 2px;
+      top: 17.5px + $node-padding-vertical;
+      left: -$tree-indent / 2;
+      margin-top: -1px;
+    }
+
+    &::after {
+      width: 2px;
+      height: 100%;
+      bottom: 0;
+      left: -$tree-indent / 2;
+    }
+
+    // last-child
+    &:last-child {
+      &::after {
+        height: 50%;
+        bottom: 50%;
+      }
+    }
+
+    // first-child
+    &:first-child {
+      &::before {
+        width: $tree-indent;
+        left: -$tree-indent;
+      }
+      &::after {
+        height: 50%;
+      }
+    }
+
+    // last & first-child
+    &:first-child:last-child {
+      &::before {
+        width: $tree-indent;
+        left: -$tree-indent;
+      }
+      &::after {
+        display: none;
+      }
+    }
   }
 
   //ルート直下
-  .root > & {
+  &.root > .node {
     &::before,
     &::after {
       display: none;
     }
   }
 
-  // last-child
-  &:last-child {
-    &::after {
-      height: 50%;
-      bottom: 50%;
-    }
-  }
-
-  // first-child
-  &:first-child {
-    &::after {
-      height: calc(100% + #{$node-padding-vertical});
-    }
-  }
-
-}
-
-.child {
-  position: relative;
-  padding-left: $tree-indent;
-
-  &::after {
-    content: "";
-    display: inline-block;
-    position: absolute;
-    background-color: #333;
-  }
-  &::after {
-    width: 2px;
-    height: 100%;
-    top: 0;
-    left: -$tree-indent / 2;
-  }
-
-  .root > & {
-    &::before,
-    &::after {
-      display: none;
-    }
+  .child {
+    padding-left: $tree-indent;
   }
 }

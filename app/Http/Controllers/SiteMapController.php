@@ -356,22 +356,43 @@ class SiteMapController extends Controller
         'title' => 'TOP',
         'path' => '/',
         'children' => [
-          ['title' => '子供1',
+          [
+            'title' => '子供1',
             'path' => '/',
-            'children' => []],
-          ['title' => '子供2',
+            'children' => []
+          ],
+          [
+            'title' => '子供2',
             'path' => '/',
             'children' => [
-              ['title' => '孫1',
+              [
+                'title' => '孫1',
                 'path' => '/',
-                'children' => []],
-              ['title' => '孫1',
+                'children' => []
+              ],
+              [
+                'title' => '孫1',
                 'path' => '/',
-                'children' => []]
-            ]],
-          ['title' => '子供3',
+                'children' => []
+              ]
+            ]
+          ],
+          [
+            'title' => '子供3',
             'path' => '/',
-            'children' => []]
+            'children' => [
+              [
+                'title' => '孫3-1',
+                'path' => '/',
+                'children' => []
+              ]
+            ]
+          ],
+          [
+            'title' => '子供4',
+            'path' => '/',
+            'children' => []
+          ]
         ]
       ]
     ];

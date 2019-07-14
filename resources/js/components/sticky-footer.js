@@ -21,7 +21,7 @@
 
   function setAttach(val) {
     if (isAttached !== val) {
-      if(isAttached) {
+      if (isAttached) {
         $wrapper.classList.remove('is-attached');
       } else {
         $wrapper.classList.add('is-attached');
@@ -30,9 +30,9 @@
     isAttached = val;
   }
 
-  document.addEventListener('DOMContentLoaded', function(){
+  document.addEventListener('DOMContentLoaded', function () {
     $wrapper = document.querySelector('.sticky-footer');
     $inner = document.querySelector('.sticky-footer__inner');
-    registerEventListeners();
+    if ($wrapper && $inner) registerEventListeners();
   })
 })();

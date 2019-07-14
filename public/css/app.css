@@ -10714,12 +10714,6 @@ a.text-dark:focus {
   width: 100%;
 }
 
-.tree {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
 .node {
   position: relative;
   padding: 5px 0;
@@ -10739,7 +10733,13 @@ a.text-dark:focus {
   background-color: #333;
 }
 
-.node::before {
+.tree-vertical {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tree-vertical .node::before {
   width: 20px;
   height: 2px;
   top: 50%;
@@ -10747,49 +10747,110 @@ a.text-dark:focus {
   margin-top: -1px;
 }
 
-.node::after {
+.tree-vertical .node::after {
   width: 2px;
   height: 100%;
   bottom: 0;
   left: -20px;
 }
 
-.root > .node::before,
-.root > .node::after {
-  display: none;
-}
-
-.node:last-child::after {
+.tree-vertical .node:last-child::after {
   height: 50%;
   bottom: 50%;
 }
 
-.node:first-child::after {
+.tree-vertical .node:first-child::after {
   height: calc(100% + 5px);
 }
 
-.child {
+.tree-vertical .node:first-child:last-child::after {
+  height: calc(50% + 5px);
+  bottom: 50%;
+}
+
+.tree-vertical .child {
   position: relative;
   padding-left: 40px;
 }
 
-.child::after {
+.tree-vertical .child::after {
   content: "";
   display: inline-block;
   position: absolute;
   background-color: #333;
 }
 
-.child::after {
+.tree-vertical .child::after {
   width: 2px;
   height: 100%;
   top: 0;
   left: -20px;
 }
 
-.root > .child::before,
-.root > .child::after {
+.tree-vertical.root > .node::before,
+.tree-vertical.root > .node::after,
+.tree-vertical.root > .child::before,
+.tree-vertical.root > .child::after {
   display: none;
+}
+
+.tree-horizontal {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tree-horizontal .node {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+.tree-horizontal .node::before {
+  width: 20px;
+  height: 2px;
+  top: 22.5px;
+  left: -20px;
+  margin-top: -1px;
+}
+
+.tree-horizontal .node::after {
+  width: 2px;
+  height: 100%;
+  bottom: 0;
+  left: -20px;
+}
+
+.tree-horizontal .node:last-child::after {
+  height: 50%;
+  bottom: 50%;
+}
+
+.tree-horizontal .node:first-child::before {
+  width: 40px;
+  left: -40px;
+}
+
+.tree-horizontal .node:first-child::after {
+  height: 50%;
+}
+
+.tree-horizontal .node:first-child:last-child::before {
+  width: 40px;
+  left: -40px;
+}
+
+.tree-horizontal .node:first-child:last-child::after {
+  display: none;
+}
+
+.tree-horizontal.root > .node::before,
+.tree-horizontal.root > .node::after {
+  display: none;
+}
+
+.tree-horizontal .child {
+  padding-left: 40px;
 }
 
 .sticky-footer {
