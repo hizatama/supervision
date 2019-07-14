@@ -10706,6 +10706,10 @@ a.text-dark:focus {
   max-width: 1000px;
 }
 
+.table--headers th {
+  text-align: right;
+}
+
 .table--fluid {
   width: 100%;
 }

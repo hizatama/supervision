@@ -10,4 +10,5 @@ class SiteMapPage extends Model
   public $table = 'site_map_pages';
 
   public $errors = [];
+  public $isChecked = false;
 }

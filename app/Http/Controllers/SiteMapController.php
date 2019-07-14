@@ -21,8 +21,9 @@ class SiteMapController extends Controller
     $history = Model\CheckHistory::select()->orderByDesc('revision')->first();
     $pages = Model\SiteMapPage::orderBy('path')->get();
     $checkHistories = [];
-    if ($history && !$history->is_passed) {
-      foreach ($pages as $page) {
+    foreach ($pages as $page) {
+      $page->isChecked = !!Model\CheckHistoryDetail::where('page_id', $page->id)->count();
+      if ($history && !$history->is_passed) {
         $allErrors = Model\CheckHistoryDetail::select()
           ->where('history_id', $history->id)
           ->where('page_id', $page->id)

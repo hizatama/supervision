@@ -59,6 +59,9 @@
 
 .table--headers {
   max-width: 1000px;
+  th {
+    text-align: right;
+  }
 }
 
 .table--fluid {
