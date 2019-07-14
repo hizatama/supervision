@@ -43,7 +43,8 @@ class SiteMapController extends Controller
       'pages' => $pages,
       'isPassed' => $history && $history->is_passed,
       'checkHistories' => $checkHistories,
-      'flashMessages' => $addeData['flashMessages'] ?? []
+      'flashMessages' => $addeData['flashMessages'] ?? [],
+      'pageHierarchy' => $this->makePagesHierarchy($pages),
     ];
 
     return view('sitemap.index', $data, $addeData);
@@ -350,14 +351,37 @@ class SiteMapController extends Controller
 
   private function makePagesHierarchy($pages)
   {
+    $children = [];
     $data = [];
 
+    $sortedPages = [];
+    foreach($pages as $page) {
+      $sortedPages['/'.$page->path] = $page;
+    }
+    ksort($sortedPages);
+
+    foreach($sortedPages as $path => $page) {
+      $pathInfo = explode('/', ltrim($page->path));
+      if(isset($children[$path])) continue;
+      $children[$path] = [
+        'title' => $page->name,
+        'path' => $page->path,
+        'children' => [],
+      ];
+    }
+
+    $root = [
+      'title' => $sortedPages['/']->name,
+      'path' => '/',
+      'children' => $children
+    ];
+
     $data = [
-      [
+      '/' => [
         'title' => 'TOP',
         'path' => '/',
         'children' => [
-          [
+          'hoge/' => [
             'title' => '子供1',
             'path' => '/',
             'children' => []

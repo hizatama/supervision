@@ -216,17 +216,21 @@
                   @endif
                 </td>
               </tr>
-              {{--          <tr>--}}
-              {{--            <td colspan="100">--}}
-              {{--              @if(isset($page->errors['charset']))--}}
-              {{--                <ul class="alert alert-danger" role="alert">--}}
-              {{--                @foreach($page->errors['charset'] as $historyDetail)--}}
-              {{--                  <li>{{$historyDetail->message}}</li>--}}
-              {{--                @endforeach--}}
-              {{--                </ul>--}}
-              {{--              @endif--}}
-              {{--            </td>--}}
-              {{--          </tr>--}}
+              <tr>
+                <td></td>
+                <td colspan="100">
+                  @if(isset($page->errors['html']))
+                    <div class="p-2">
+                      <h6>W3C HTML Validation</h6>
+                      <ul class="alert alert-danger" role="alert">
+                      @foreach($page->errors['html'] as $historyDetail)
+                        <li>{{$historyDetail->message}}</li>
+                      @endforeach
+                      </ul>
+                    </div>
+                  @endif
+                </td>
+              </tr>
             @endforeach
             </tbody>
           </table>
@@ -368,36 +372,42 @@
     }
 
     function getLeftInput(el) {
-      nextInput = el.parentNode.previousElementSibling;
+      let nextInput = el.parentNode.previousElementSibling;
       if (nextInput) {
         nextInput = nextInput.querySelector('input[type="text"]');
-        return nextInput.disabled ? getLeftInput(nextInput) : nextInput;
+        return nextInput.disabled ? nextInput.previousElementSibling : nextInput;
+        // return nextInput.disabled ? getLeftInput(nextInput) : nextInput;
       }
       return null;
     }
 
     function getRightInput(el) {
-      nextInput = el.parentNode.nextElementSibling;
+      let nextInput = el.parentNode.nextElementSibling;
       if (nextInput) {
         nextInput = nextInput.querySelector('input[type="text"]');
-        return nextInput.disabled ? getRightInput(nextInput) : nextInput;
+        return nextInput.disabled ? nextInput.previousElementSibling : nextInput;
+        // return nextInput.disabled ? getRightInput(nextInput) : nextInput;
       }
       return null;
     }
 
     function getTopInput(currentIndex, currentKey) {
       if(currentIndex < 0) return null;
-      nextInput = document.querySelector('[name="pages[' + (Math.max(0, currentIndex - 1)) + '][' + currentKey + ']"]');
+      const currentInput = document.querySelector('[name="pages[' + (Math.max(0, currentIndex)) + '][' + currentKey + ']"]');
+      const nextInput = document.querySelector('[name="pages[' + (Math.max(0, currentIndex - 1)) + '][' + currentKey + ']"]');
       if(nextInput) {
-        return nextInput.disabled ? getTopInput(currentIndex-1, currentKey) : nextInput;
+        return nextInput.disabled ? currentInput.previousElementSibling : nextInput;
+        // return nextInput.disabled ? getTopInput(currentIndex-1, currentKey) : nextInput;
       }
       return null;
     }
 
     function getBottomInput(currentIndex, currentKey) {
-      nextInput = document.querySelector('[name="pages[' + (Math.min(lastIndex, currentIndex + 1)) + '][' + currentKey + ']"]');
+      const currentInput = document.querySelector('[name="pages[' + (Math.min(lastIndex, currentIndex)) + '][' + currentKey + ']"]');
+      const nextInput = document.querySelector('[name="pages[' + (Math.min(lastIndex, currentIndex + 1)) + '][' + currentKey + ']"]');
       if(nextInput) {
-        return nextInput.disabled ? getBottomInput(currentIndex + 1, currentKey) : nextInput;
+        return nextInput.disabled ? currentInput.previousElementSibling : nextInput;
+        // return nextInput.disabled ? getBottomInput(currentIndex + 1, currentKey) : nextInput;
       }
       return null;
     }
@@ -441,7 +451,7 @@
     });
 
     $tableBody.addEventListener('keydown', function (e) {
-      if (e.target.tagName !== 'INPUT' || e.target.type !== 'text') return;
+      if (e.target.tagName !== 'INPUT') return;
       const matches = /^pages\[(\d+)]\[(\w+)]$/.exec(e.target.name);
       if (matches) {
         const currentIndex = parseInt(matches[1], 10);
@@ -465,16 +475,22 @@
             addRow();
             nextInput = getBottomInput(currentIndex, currentKey);
           }
-        } else if (e.key === 'ArrowLeft' && e.target.selectionStart === 0 && e.target.selectionEnd === 0) {
+        } else if (e.key === 'ArrowLeft' &&
+          (e.target.type === 'checkbox' ||
+            (e.target.type === 'text' && e.target.selectionStart === 0 && e.target.selectionEnd === 0))) {
           nextInput = getLeftInput(e.target);
-          if (nextInput) {
+          console.log('nextINput', nextInput);
+          if (nextInput && nextInput.type === 'text') {
             setTimeout(()=>{
               nextInput.setSelectionRange(-1, -1);
             }, 10);
           }
-        } else if (e.key === 'ArrowRight' && e.target.selectionStart === e.target.value.length && e.target.selectionEnd === e.target.value.length) {
+        } else if (e.key === 'ArrowRight' &&
+          (e.target.type === 'checkbox' ||
+            (e.target.type === 'text' && e.target.selectionStart === e.target.value.length && e.target.selectionEnd === e.target.value.length))) {
           nextInput = getRightInput(e.target);
-          if (nextInput) {
+          console.log('nextINput', nextInput);
+          if (nextInput && nextInput.type === 'text') {
             setTimeout(()=>{
               nextInput.setSelectionRange(0, 0);
             }, 10);
