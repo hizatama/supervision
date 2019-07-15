@@ -4,6 +4,8 @@
 
 $tree-indent: 40px;
 $node-padding-vertical: 5px;
+$node-width: 200px;
+$node-height: 35px;
 
 // -------------------------------
 // common - node
@@ -16,8 +18,8 @@ $node-padding-vertical: 5px;
   // アイテム -------------------------------
   &-item {
     border: 1px solid #999;
-    padding: 5px 10px;
-    width: 180px;
+    padding: 0;
+    width: $node-width;
   }
 
   // 線 -------------------------------
@@ -28,85 +30,13 @@ $node-padding-vertical: 5px;
     position: absolute;
     background-color: #333;
   }
-}
 
-// -------------------------------
-// tree-vertical
-// -------------------------------
-.tree-vertical {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-
-  .node {
-    // 線 -------------------------------
-    &::before {
-      width: $tree-indent / 2;
-      height: 2px;
-      top: 50%;
-      left: -$tree-indent / 2;
-      margin-top: -1px;
-    }
-
-    &::after {
-      width: 2px;
-      height: 100%;
-      bottom: 0;
-      left: -$tree-indent / 2;
-    }
-
-    // last-child
-    &:last-child {
-      &::after {
-        height: 50%;
-        bottom: 50%;
-      }
-    }
-
-    // first-child
-    &:first-child {
-      &::after {
-        height: calc(100% + #{$node-padding-vertical});
-      }
-    }
-
-    // first-child
-    &:first-child:last-child {
-      &::after {
-        height: calc(50% + #{$node-padding-vertical});
-        bottom: 50%;
-      }
-    }
-  }
-
-  .child {
-    position: relative;
-    padding-left: $tree-indent;
-
-    &::after {
-      content: "";
-      display: inline-block;
-      position: absolute;
-      background-color: #333;
-    }
-
-    &::after {
-      width: 2px;
-      height: 100%;
-      top: 0;
-      left: -$tree-indent / 2;
-    }
-  }
-
-
-  //ルート直下
-  &.root{
-    > .node,
-    > .child {
-      &::before,
-      &::after {
-        display: none;
-      }
+  &-textbox {
+    border: none;
+    width: 100%;
+    padding: 5px 10px;
+    &:focus {
+      background-color: #fffacc;
     }
   }
 }
@@ -114,7 +44,7 @@ $node-padding-vertical: 5px;
 // -------------------------------
 // tree-horizontal
 // -------------------------------
-.tree-horizontal {
+.tree {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -128,7 +58,7 @@ $node-padding-vertical: 5px;
     &::before {
       width: $tree-indent / 2;
       height: 2px;
-      top: 17.5px + $node-padding-vertical;
+      top: $node-height/2 + $node-padding-vertical;
       left: -$tree-indent / 2;
       margin-top: -1px;
     }
@@ -143,19 +73,8 @@ $node-padding-vertical: 5px;
     // last-child
     &:last-child {
       &::after {
-        height: 50%;
-        bottom: 50%;
-      }
-    }
-
-    // first-child
-    &:first-child {
-      &::before {
-        width: $tree-indent;
-        left: -$tree-indent;
-      }
-      &::after {
-        height: 50%;
+        height: $node-height/2 + $node-padding-vertical;
+        top: 0;
       }
     }
 
@@ -183,3 +102,33 @@ $node-padding-vertical: 5px;
     padding-left: $tree-indent;
   }
 }
+
+// -------------------------------
+// tree-horizontal
+// -------------------------------
+.tree-horizontal {
+
+  .node {
+    // first-child
+    &:first-child {
+      &::before {
+        width: $tree-indent;
+        left: -$tree-indent;
+      }
+      &::after {
+        height: 50%;
+      }
+    }
+  }
+}
+
+// -------------------------------
+// tree-vertical
+// -------------------------------
+.tree-vertical {
+  .node {
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+}
+

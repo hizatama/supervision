@@ -10692,6 +10692,12 @@ body {
   left: 8px;
 }
 
+.table--pages tbody td.cell-status .alert {
+  margin-bottom: 0;
+  padding: 0.375rem 5px;
+  border-radius: 4px 0 0 4px;
+}
+
 .table--pages tbody td .alert {
   padding: 5px;
   margin-bottom: 5px;
@@ -10741,8 +10747,8 @@ body {
 
 .node-item {
   border: 1px solid #999;
-  padding: 5px 10px;
-  width: 180px;
+  padding: 0;
+  width: 200px;
 }
 
 .node::before,
@@ -10753,80 +10759,29 @@ body {
   background-color: #333;
 }
 
-.tree-vertical {
+.node-textbox {
+  border: none;
+  width: 100%;
+  padding: 5px 10px;
+}
+
+.node-textbox:focus {
+  background-color: #fffacc;
+}
+
+.tree {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.tree-vertical .node::before {
-  width: 20px;
-  height: 2px;
-  top: 50%;
-  left: -20px;
-  margin-top: -1px;
-}
-
-.tree-vertical .node::after {
-  width: 2px;
-  height: 100%;
-  bottom: 0;
-  left: -20px;
-}
-
-.tree-vertical .node:last-child::after {
-  height: 50%;
-  bottom: 50%;
-}
-
-.tree-vertical .node:first-child::after {
-  height: calc(100% + 5px);
-}
-
-.tree-vertical .node:first-child:last-child::after {
-  height: calc(50% + 5px);
-  bottom: 50%;
-}
-
-.tree-vertical .child {
-  position: relative;
-  padding-left: 40px;
-}
-
-.tree-vertical .child::after {
-  content: "";
-  display: inline-block;
-  position: absolute;
-  background-color: #333;
-}
-
-.tree-vertical .child::after {
-  width: 2px;
-  height: 100%;
-  top: 0;
-  left: -20px;
-}
-
-.tree-vertical.root > .node::before,
-.tree-vertical.root > .node::after,
-.tree-vertical.root > .child::before,
-.tree-vertical.root > .child::after {
-  display: none;
-}
-
-.tree-horizontal {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.tree-horizontal .node {
+.tree .node {
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
 }
 
-.tree-horizontal .node::before {
+.tree .node::before {
   width: 20px;
   height: 2px;
   top: 22.5px;
@@ -10834,16 +10789,34 @@ body {
   margin-top: -1px;
 }
 
-.tree-horizontal .node::after {
+.tree .node::after {
   width: 2px;
   height: 100%;
   bottom: 0;
   left: -20px;
 }
 
-.tree-horizontal .node:last-child::after {
-  height: 50%;
-  bottom: 50%;
+.tree .node:last-child::after {
+  height: 22.5px;
+  top: 0;
+}
+
+.tree .node:first-child:last-child::before {
+  width: 40px;
+  left: -40px;
+}
+
+.tree .node:first-child:last-child::after {
+  display: none;
+}
+
+.tree.root > .node::before,
+.tree.root > .node::after {
+  display: none;
+}
+
+.tree .child {
+  padding-left: 40px;
 }
 
 .tree-horizontal .node:first-child::before {
@@ -10855,22 +10828,9 @@ body {
   height: 50%;
 }
 
-.tree-horizontal .node:first-child:last-child::before {
-  width: 40px;
-  left: -40px;
-}
-
-.tree-horizontal .node:first-child:last-child::after {
-  display: none;
-}
-
-.tree-horizontal.root > .node::before,
-.tree-horizontal.root > .node::after {
-  display: none;
-}
-
-.tree-horizontal .child {
-  padding-left: 40px;
+.tree-vertical .node {
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 
 .sticky-footer {

@@ -29,6 +29,9 @@
       <li class="nav-item">
         <a class="nav-link" id="output-tab" data-toggle="tab" href="#output">サイトマップ</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" id="feature-tab" data-toggle="tab" href="#feature">今後追加予定機能</a>
+      </li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane main-tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
@@ -36,9 +39,15 @@
         <table class="table table--headers table--fluid">
           <tr>
             <th><label for="url_production">本番環境</label></th>
-            <td>{{Form::text('sitemap[url_production]', $siteMap->url_production, ['id'=>'url_production', 'class' => 'form-control'])}}</td>
+            <td>
+              {{Form::text('sitemap[url_production]', $siteMap->url_production, ['id'=>'url_production', 'class' => 'form-control'])}}
+              <button type="button" class="btn btn-link" id="open_production_page">open</button>
+            </td>
             <th><label for="url_staging">テスト環境</label></th>
-            <td>{{Form::text('sitemap[url_staging]', $siteMap->url_staging, ['id'=>'url_staging', 'class' => 'form-control'])}}</td>
+            <td>
+              {{Form::text('sitemap[url_staging]', $siteMap->url_staging, ['id'=>'url_staging', 'class' => 'form-control'])}}
+              <button type="button" class="btn btn-link" id="open_staging_page">open</button>
+            </td>
           </tr>
         </table>
 
@@ -109,7 +118,7 @@
             <tbody id="table_body">
             @foreach($pages as $idx => $page)
               <tr>
-                <td>
+                <td class="cell-status">
                   @if(count($page->errors))
                     <div class="alert alert-danger text-center">NG</div>
                   @endif
@@ -244,27 +253,79 @@
 
           <ul class="nav nav-tabs">
             <li class="nav-item">
-              <a class="nav-link active" id="vertical-tab" data-toggle="tab" href="#vertical">縦出力</a>
+              <a class="nav-link active" id="horizontal-tab" data-toggle="tab" href="#horizontal">横出力</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="horizontal-tab" data-toggle="tab" href="#horizontal">横出力</a>
+              <a class="nav-link" id="vertical-tab" data-toggle="tab" href="#vertical">縦出力</a>
             </li>
           </ul>
 
           <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="vertical" role="tabpanel" aria-labelledby="vertical-tab">
-              <ul class="tree-vertical root">
+            <div class="tab-pane fade show active" id="horizontal" role="tabpanel" aria-labelledby="horizontal-tab">
+              <ul class="tree tree-horizontal root">
                 @include('sitemap.output-tree', ['pages' => $pageHierarchy])
               </ul>
             </div>
-            <div class="tab-pane fade" id="horizontal" role="tabpanel" aria-labelledby="horizontal-tab">
-              <ul class="tree-horizontal root">
-                @include('sitemap.output-tree-horizontal', ['pages' => $pageHierarchy])
+            <div class="tab-pane fade" id="vertical" role="tabpanel" aria-labelledby="vertical-tab">
+              <ul class="tree tree-vertical root">
+                @include('sitemap.output-tree', ['pages' => $pageHierarchy])
               </ul>
             </div>
           </div>
         </div>
+      </div>
+      <div class="tab-pane main-tab-pane fade" id="feature" role="tabpanel" aria-labelledby="feature-tab">
+        <ul>
+          <li>
+            操作性の向上
+            <ul>
+              <li>ExcelからのTSVコピペに対応（複数行・複数列）</li>
+            </ul>
+          </li>
+          <li>
+            案件進行管理機能
+            <ul>
+              <li>サイトマップ出力機能(現在ダミー出力)</li>
+              <li>サイトマップPDF出力機能</li>
+              <li>ワイヤーフレーム作成機能</li>
+              <li>ワイヤーフレーム・デザインデータのアップロード機能</li>
+              <li>ワイヤーフレーム・デザインデータへのコメント機能</li>
+              <li>ページごとの進捗管理（WBSっぽい何か）</li>
+              <li>meta等のHTML出力機能</li>
+            </ul>
+          </li>
+          <li>
+            テスト機能
+            <ul>
+              <li>キャプチャベースのリグレッションテスト</li>
+              <li>SeleniumGridによる各ブラウザテスト</li>
+              <li>Prettier等での書き方指摘(HTML/CSS/JS)</li>
+              <li>スピードテスト</li>
+              <li>W3C CSS Validation</li>
+              <li>パス記述方法（相対/ルート相対/絶対）チェック</li>
+              <li>禁止用語チェック</li>
+              <li>表記揺れチェック</li>
+            </ul>
+          </li>
+          <li>
+            サイトマップ機能
+            <ul>
+              <li>サイトマップからディレクトリマップの作成</li>
+              <li>ページにアイコン追加</li>
+              <li>複数ページへの対応</li>
+              <li>sitemap.xmlの作成</li>
+            </ul>
+          </li>
+          <li>
+            サービス後悔するための機能追加
+            <ul>
+              <li>ユーザー管理機能(外部ログイン前提)</li>
+              <li>外部公開用のURL生成機能</li>
+              <li>リポジトリ連携(CI/CD)</li>
+            </ul>
+          </li>
 
+        </ul>
       </div>
     </div>
 
@@ -273,7 +334,6 @@
   <div class="sticky-footer is-fixed">
     <div class="sticky-footer__inner">
       <div class="text-right">
-        {{Form::button('サイトマップ表示', ['class' => 'btn btn-secondary exec-view-sitemap'])}}
         {{Form::button('ページチェックを実行', ['class' => 'btn btn-secondary exec-check-page'])}}
         {{Form::submit('登録する', ['class'=>'btn btn-primary'])}}
       </div>
@@ -295,7 +355,7 @@
     const $addRow = document.getElementById('add_row');
     const $tableBody = document.getElementById('table_body');
     const template = `
-      <td><div class="alert alert-info text-center">New</div></td>
+      <td class="cell-status"><div class="alert alert-info text-center">New</div></td>
       <td>{{Form::hidden('pages[?][id]', 'new')}}{{Form::text('pages[?][name]', null, ['class' => 'form-control', 'required' => 'required'])}}</td>
           <td class="cell-path">{{Form::text('pages[?][path]', null, ['class' => 'form-control'])}}</td>
           <td>
@@ -375,8 +435,8 @@
       let nextInput = el.parentNode.previousElementSibling;
       if (nextInput) {
         nextInput = nextInput.querySelector('input[type="text"]');
-        return nextInput.disabled ? nextInput.previousElementSibling : nextInput;
-        // return nextInput.disabled ? getLeftInput(nextInput) : nextInput;
+        if(nextInput)
+          return nextInput.disabled ? nextInput.previousElementSibling : nextInput;
       }
       return null;
     }
@@ -385,8 +445,8 @@
       let nextInput = el.parentNode.nextElementSibling;
       if (nextInput) {
         nextInput = nextInput.querySelector('input[type="text"]');
-        return nextInput.disabled ? nextInput.previousElementSibling : nextInput;
-        // return nextInput.disabled ? getRightInput(nextInput) : nextInput;
+        if(nextInput)
+          return nextInput.disabled ? nextInput.previousElementSibling : nextInput;
       }
       return null;
     }
@@ -396,8 +456,7 @@
       const currentInput = document.querySelector('[name="pages[' + (Math.max(0, currentIndex)) + '][' + currentKey + ']"]');
       const nextInput = document.querySelector('[name="pages[' + (Math.max(0, currentIndex - 1)) + '][' + currentKey + ']"]');
       if(nextInput) {
-        return nextInput.disabled ? currentInput.previousElementSibling : nextInput;
-        // return nextInput.disabled ? getTopInput(currentIndex-1, currentKey) : nextInput;
+        return nextInput.disabled ? nextInput.previousElementSibling : nextInput;
       }
       return null;
     }
@@ -406,8 +465,7 @@
       const currentInput = document.querySelector('[name="pages[' + (Math.min(lastIndex, currentIndex)) + '][' + currentKey + ']"]');
       const nextInput = document.querySelector('[name="pages[' + (Math.min(lastIndex, currentIndex + 1)) + '][' + currentKey + ']"]');
       if(nextInput) {
-        return nextInput.disabled ? currentInput.previousElementSibling : nextInput;
-        // return nextInput.disabled ? getBottomInput(currentIndex + 1, currentKey) : nextInput;
+        return nextInput.disabled ?  nextInput.previousElementSibling : nextInput;
       }
       return null;
     }
@@ -479,7 +537,6 @@
           (e.target.type === 'checkbox' ||
             (e.target.type === 'text' && e.target.selectionStart === 0 && e.target.selectionEnd === 0))) {
           nextInput = getLeftInput(e.target);
-          console.log('nextINput', nextInput);
           if (nextInput && nextInput.type === 'text') {
             setTimeout(()=>{
               nextInput.setSelectionRange(-1, -1);
@@ -489,7 +546,6 @@
           (e.target.type === 'checkbox' ||
             (e.target.type === 'text' && e.target.selectionStart === e.target.value.length && e.target.selectionEnd === e.target.value.length))) {
           nextInput = getRightInput(e.target);
-          console.log('nextINput', nextInput);
           if (nextInput && nextInput.type === 'text') {
             setTimeout(()=>{
               nextInput.setSelectionRange(0, 0);
@@ -516,11 +572,14 @@
       }
     });
 
-    document.querySelector('.exec-view-sitemap').addEventListener('click', function(e){
+    document.getElementById('open_production_page').addEventListener('click', function(e){
       e.preventDefault();
-      if(confirm('入力されたデータは保存されません。\nサイトマップ出力前に保存してください。')) {
-        document.getElementById('sitemap_form').submit();
-      }
+      window.open(document.getElementById('url_production').value, '_blank');
+    });
+
+    document.getElementById('open_staging_page').addEventListener('click', function(e){
+      e.preventDefault();
+      window.open(document.getElementById('url_staging').value, '_blank');
     });
 
   </script>

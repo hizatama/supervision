@@ -302,7 +302,8 @@ class SiteMapController extends Controller
             $msg = new Model\ResultMessage;
             $msg->key = 'html';
             $msg->type = $message->getType();
-            $msg->message = $message->getText();
+            $lines = '[LINE: '.implode('-', array_unique([$message->getFirstLine(), $message->getLastLine()])).']';
+            $msg->message = $lines.$message->getText();
             $errorMessages[] = $msg;
           }
         }
@@ -382,39 +383,86 @@ class SiteMapController extends Controller
         'path' => '/',
         'children' => [
           'hoge/' => [
-            'title' => '子供1',
+            'title' => '会社概要',
             'path' => '/',
             'children' => []
           ],
           [
-            'title' => '子供2',
+            'title' => 'サービス紹介',
             'path' => '/',
             'children' => [
               [
-                'title' => '孫1',
+                'title' => 'Hoge Fuga Monster',
                 'path' => '/',
                 'children' => []
               ],
               [
-                'title' => '孫1',
+                'title' => 'Hoge Fuga Lite',
                 'path' => '/',
                 'children' => []
               ]
             ]
           ],
           [
-            'title' => '子供3',
+            'title' => '商品紹介',
             'path' => '/',
             'children' => [
               [
-                'title' => '孫3-1',
+                'title' => '飴なめ器',
+                'path' => '/',
+                'children' => []
+              ],
+              [
+                'title' => '洗浄機能抜き食洗機',
                 'path' => '/',
                 'children' => []
               ]
             ]
           ],
           [
-            'title' => '子供4',
+            'title' => '採用情報',
+            'path' => '/',
+            'children' => [
+              [
+                'title' => '社長のことば',
+                'path' => '/',
+                'children' => []
+              ],
+              [
+                'title' => '雇用条件',
+                'path' => '/',
+                'children' => []
+              ],
+              [
+                'title' => '先輩紹介',
+                'path' => '/',
+                'children' => [
+                  [
+                    'title' => '田中　二郎',
+                    'path' => '/',
+                    'children' => []
+                  ],
+                  [
+                    'title' => 'ツユ　ダク三郎',
+                    'path' => '/',
+                    'children' => []
+                  ],
+                  [
+                    'title' => '油マ　史太郎',
+                    'path' => '/',
+                    'children' => []
+                  ],
+                  [
+                    'title' => '増背　脂',
+                    'path' => '/',
+                    'children' => []
+                  ]
+                ]
+              ]
+            ]
+          ],
+          [
+            'title' => 'サイトマップ',
             'path' => '/',
             'children' => []
           ]
