@@ -552,7 +552,10 @@
             }, 10);
           }
         }
-        if (nextInput) nextInput.focus();
+        if (nextInput) {
+          e.preventDefault();
+          nextInput.focus();
+        }
       }
     });
 
