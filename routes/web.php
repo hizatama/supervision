@@ -18,3 +18,4 @@ Route::resource('project', 'ProjectController');
 Route::get('/sitemap/check', 'SiteMapController@check')->name('sitemap.check');
 Route::get('/sitemap/output', 'SiteMapController@output')->name('sitemap.output');
 Route::resource('sitemap', 'SiteMapController');
+Route::resource('visualfeedback', 'VisualFeedbackController');
