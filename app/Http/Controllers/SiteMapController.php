@@ -16,7 +16,7 @@ class SiteMapController extends Controller
   /**
    * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
    */
-  private function viewIndex($addeData = [])
+  private function viewSitemap(Model\SiteMap $sitemap, $addeData = [])
   {
     $history = Model\CheckHistory::select()->orderByDesc('revision')->first();
     $pages = Model\SiteMapPage::orderBy('path')->get();
@@ -37,9 +37,8 @@ class SiteMapController extends Controller
       }
     }
 
-
     $data = [
-      'siteMap' => Model\SiteMap::all()[0],
+      'siteMap' => $sitemap,
       'pages' => $pages,
       'isPassed' => $history && $history->is_passed,
       'checkHistories' => $checkHistories,
@@ -47,7 +46,7 @@ class SiteMapController extends Controller
       'pageHierarchy' => $this->makePagesHierarchy($pages),
     ];
 
-    return view('sitemap.index', $data, $addeData);
+    return view('sitemap.show', $data, $addeData);
   }
 
   /**
@@ -55,17 +54,32 @@ class SiteMapController extends Controller
    */
   public function index()
   {
-    return $this->viewIndex();
+    return 'index';
+  }
+
+  /**
+   * @param $key
+   * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+   */
+  public function show($key)
+  {
+    $sitemap = Model\SiteMap::where('key', $key)->first();
+    if(!$sitemap){
+      return redirect()->route('sitemap.index');
+    }
+    return $this->viewSitemap($sitemap);
   }
 
   /**
    * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
    */
-  public function store()
+  public function store(Request $request)
   {
     $msg = $this->update();
+    $key = Request::all('key');
+    $siteMap = Model\SiteMap::where('key', $key)->first();
 
-    return $this->viewIndex([
+    return $this->viewSitemap($siteMap, [
       'flashMessages' => [$msg]
     ]);
   }
@@ -77,6 +91,7 @@ class SiteMapController extends Controller
   protected function update()
   {
 
+    $key = Request::all('key');
     $postSiteMap = Request::all('sitemap');
     $postPages = Request::all('pages');
 
@@ -85,7 +100,7 @@ class SiteMapController extends Controller
 
     try {
       DB::beginTransaction();
-      $siteMap = Model\SiteMap::all()->first();
+      $siteMap = Model\SiteMap::where('key', $key)->first();
       if ($siteMap instanceof Model\SiteMap) {
         $siteMap->update($postSiteMap['sitemap']);
 
@@ -257,9 +272,9 @@ class SiteMapController extends Controller
     return $messages;
   }
 
-  public function check()
+  public function check(string $key)
   {
-    $siteMap = Model\SiteMap::all()[0];
+    $siteMap = Model\SiteMap::where('key', $key)->first();
     $pages = Model\SiteMapPage::orderBy('path')->get();
 
     $validator = new \HtmlValidator\Validator;
@@ -339,7 +354,7 @@ class SiteMapController extends Controller
       $history->save();
     }
 
-    return redirect()->route('sitemap.index');
+    return redirect()->route('sitemap.show', ['key' => $key]);
   }
 
   public function output()
