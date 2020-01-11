@@ -16,6 +16,7 @@ class CreateSiteMapsTable extends Migration
     Schema::create('site_maps', function (Blueprint $table) {
       $table->bigIncrements('id');
       $table->string('key')->unique();
+      $table->string('name');
       $table->string('url_production');
       $table->string('url_staging');
       $table->string('charset')->nullable();

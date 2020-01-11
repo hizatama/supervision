@@ -13,6 +13,7 @@ class SiteMapTableSeeder extends Seeder
     {
       DB::table('site_maps')->insert([
         'key' => \App\Model\SiteMap::generateKey(1),
+        'name' => 'サンプルサイトAA',
         'url_production' => 'http://127.0.0.1:8080',
         'url_staging' => 'http://127.0.0.1:8888',
         'charset' => 'UTF-8',
@@ -26,6 +27,8 @@ class SiteMapTableSeeder extends Seeder
         'og_description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
         'og_image' => 'http://127.0.0.1:8080/og_image.png',
         'favicon' => '/favicon.ico',
+        'created_at' => new DateTime(),
+        'updated_at' => new DateTime()
       ]);
     }
 }

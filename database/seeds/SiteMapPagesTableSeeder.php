@@ -13,6 +13,7 @@ class SiteMapPagesTableSeeder extends Seeder
   {
     DB::table('site_map_pages')->insert([
       [
+        'sitemap_id' => 1,
         'path' => '',
         'name' => 'TOPページ',
         'title_use_common' => false,
@@ -31,6 +32,7 @@ class SiteMapPagesTableSeeder extends Seeder
         'charset_use_common' => true,
       ],
       [
+        'sitemap_id' => 1,
         'path' => 'about.html',
         'name' => '会社概要',
         'title' => '会社概要｜●●株式会社',
@@ -49,6 +51,7 @@ class SiteMapPagesTableSeeder extends Seeder
         'charset_use_common' => true,
       ],
       [
+        'sitemap_id' => 1,
         'path' => 'service/',
         'name' => 'サービス紹介ページ',
         'title' => 'サービス紹介｜●●株式会社',

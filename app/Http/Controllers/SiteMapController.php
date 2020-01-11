@@ -18,8 +18,8 @@ class SiteMapController extends Controller
    */
   private function viewSitemap(Model\SiteMap $sitemap, $addeData = [])
   {
-    $history = Model\CheckHistory::select()->orderByDesc('revision')->first();
-    $pages = Model\SiteMapPage::orderBy('path')->get();
+    $history = Model\CheckHistory::select()->where('sitemap_id', $sitemap->id)->orderByDesc('revision')->first();
+    $pages = Model\SiteMapPage::orderBy('path')->where('sitemap_id', $sitemap->id)->get();
     $checkHistories = [];
     foreach ($pages as $page) {
       $page->isChecked = !!Model\CheckHistoryDetail::where('page_id', $page->id)->count();
@@ -54,7 +54,9 @@ class SiteMapController extends Controller
    */
   public function index()
   {
-    return 'index';
+    return view('sitemap.index', [
+      'siteMaps' => Model\SiteMap::all()->sortByDesc('id')
+    ]);
   }
 
   /**
@@ -82,6 +84,24 @@ class SiteMapController extends Controller
     return $this->viewSitemap($siteMap, [
       'flashMessages' => [$msg]
     ]);
+  }
+
+  public function add(Request $request)
+  {
+
+    $key = Model\SiteMap::generateKey('dummy'.microtime(true).rand());
+    // add New Record
+    $tempSitemap = new Model\SiteMap();
+    $tempSitemap->key = $key;
+    $tempSitemap->name = '新しいサイト';
+    $tempSitemap->url_production = 'http://127.0.0.1';
+    $tempSitemap->url_staging = 'http://127.0.0.1';
+    $tempSitemap->save();
+
+    $sitemap = Model\SiteMap::where('key', $key)->get()->first();
+    $sitemap->key = Model\SiteMap::generateKey($sitemap->id);
+
+    return redirect()->route('sitemap.index');
   }
 
   /**
@@ -117,6 +137,7 @@ class SiteMapController extends Controller
             'charset_use_common' => 0,
           ], $postPage);
 
+          $postPage['sitemap_id'] = $siteMap->id;
           $pageId = $postPage['id'];
           unset($postPage['id']);
           if ($pageId === 'new') {
@@ -283,6 +304,7 @@ class SiteMapController extends Controller
     // history 作成
     $revision = intval(Model\CheckHistory::max('revision')) + 1;
     $history = new Model\CheckHistory([
+      'sitemap_id' => $siteMap->id,
       'revision' => $revision,
       'is_passed' => empty($messages),
     ]);
@@ -338,6 +360,7 @@ class SiteMapController extends Controller
         foreach ($errorMessages as /* @var Model\ResultMessage */ $msg) {
           // TODO history_detail 作成
           $historyDetail = new Model\CheckHistoryDetail([
+            'sitemap_id' => $siteMap->id,
             'history_id' => $history->id,
             'page_id' => $page->id,
             'key' => $msg->key,
@@ -369,6 +392,10 @@ class SiteMapController extends Controller
   {
     $children = [];
     $data = [];
+
+    if(count($pages) === 0) {
+      return [];
+    }
 
     $sortedPages = [];
     foreach($pages as $page) {

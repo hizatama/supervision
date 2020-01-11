@@ -15,6 +15,7 @@ class CreateSiteMapPagesTable extends Migration
   {
     Schema::create('site_map_pages', function (Blueprint $table) {
       $table->bigIncrements('id');
+      $table->unsignedBigInteger('sitemap_id');
       $table->string('path')->nullable();
       $table->string('name');
       $table->string('title')->nullable()->default('');
@@ -31,11 +32,13 @@ class CreateSiteMapPagesTable extends Migration
       $table->boolean('og_description_use_common')->default(false);
       $table->string('og_image')->nullable();
       $table->boolean('og_image_use_common')->default(true);
-      $table->string('favicon')->nullable();
+      $table->string('favicon')->nullable()->default('/favicon.ico');
       $table->boolean('favicon_use_common')->default(true);
-      $table->string('charset')->nullable();
+      $table->string('charset')->nullable()->default('UTF-8');
       $table->boolean('charset_use_common')->default(true);
       $table->timestamps();
+
+      $table->foreign('sitemap_id')->references('id')->on('site_maps');
     });
   }
 
