@@ -9,18 +9,18 @@
 
   <div class="container-fluid">
     <table class="table table--fluid">
+      <tr>
+        <th>サイト名</th>
+        <th>アクション</th>
+        <th>最終更新日時</th>
+      </tr>
+      @foreach($siteMaps as $sitemap)
         <tr>
-            <th>サイト名</th>
-            <th>アクション</th>
-            <th>最終更新日時</th>
+          <td>{{$sitemap->name}}</td>
+          <td>{{Html::link(route('sitemap.show', ['key' => $sitemap->key]), 'サイトマップ')}}</td>
+          <td>{{$sitemap->updated_at}}</td>
         </tr>
-    @foreach($siteMaps as $sitemap)
-        <tr>
-            <td>{{$sitemap->name}}</td>
-            <td>{{Html::link(route('sitemap.show', ['key' => $sitemap->key]), 'サイトマップ')}}</td>
-            <td>{{$sitemap->updated_at}}</td>
-        </tr>
-    @endforeach
+      @endforeach
     </table>
   </div>
 
@@ -28,7 +28,7 @@
     <div class="sticky-footer__inner">
       <div class="text-right">
         {{Form::open(['url' => route('sitemap.add'), 'method' => 'post', 'id' => 'add_form'])}}
-          {{Form::button('サイトを追加する', ['class' => 'btn btn-secondary exec-add-page'])}}
+        {{Form::button('サイトを追加する', ['class' => 'btn btn-secondary exec-add-page'])}}
         {{Form::close()}}
       </div>
     </div>
@@ -40,9 +40,9 @@
 @section('scripts')
   <script>
 
-    document.querySelector('.exec-add-page').addEventListener('click', function(e){
-        e.preventDefault();
-        document.getElementById('add_form').submit();
+    document.querySelector('.exec-add-page').addEventListener('click', function (e) {
+      e.preventDefault();
+      document.getElementById('add_form').submit();
     });
 
     // document.querySelector('.exec-delete-sitemap').addEventListener('click', function(e){
