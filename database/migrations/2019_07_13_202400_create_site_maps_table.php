@@ -15,7 +15,7 @@ class CreateSiteMapsTable extends Migration
   {
     Schema::create('site_maps', function (Blueprint $table) {
       $table->bigIncrements('id');
-      $table->string('key')->unique();
+      $table->string('key', 190)->unique();
       $table->string('name');
       $table->integer('project_type')->nullable();
       $table->string('project_type_other')->nullable();
