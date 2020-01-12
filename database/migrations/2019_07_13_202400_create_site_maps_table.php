@@ -22,7 +22,8 @@ class CreateSiteMapsTable extends Migration
       $table->integer('project_type')->nullable();
       $table->string('project_type_other')->nullable();
       $table->string('site_domain')->nullable();
-      $table->string('test_server')->nullable();
+      $table->string('test_server_type')->nullable();
+      $table->string('test_server_type_other')->nullable();
       $table->string('browser_list')->nullable();
       $table->string('site_page_lg')->nullable();
       $table->string('site_page_md')->nullable();

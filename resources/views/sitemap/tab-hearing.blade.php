@@ -87,7 +87,32 @@
             <th class="bg-secondary text-white"><label for="site_domain">サイトドメイン</label></th>
             <td>{{Form::text('sitemap[site_domain]', $siteMap->site_domain, ['id' => 'site_domain','class' => 'form-control'])}}</td>
             <th class="bg-secondary text-white"><label for="test_server">テスト環境有無</label></th>
-            <td>{{Form::text('sitemap[test_server]', $siteMap->test_server, ['id' => 'test_server','class' => 'form-control'])}}</td>
+            <td>
+              <div class="form-check">
+                {{Form::radio('sitemap[test_server_type]', '0', $siteMap->test_server_type == '0', ['id' => 'test_server_type_0', 'class' => 'form-check-input'])}}
+                <label class="form-check-label" for="test_server_type_0">なし</label>
+              </div>
+              <div class="form-check">
+                {{Form::radio('sitemap[test_server_type]', '1', $siteMap->test_server_type == '1', ['id' => 'test_server_type_1', 'class' => 'form-check-input'])}}
+                <label class="form-check-label" for="test_server_type_1">調達済み</label>
+              </div>
+              <div class="form-check">
+                {{Form::radio('sitemap[test_server_type]', '2', $siteMap->test_server_type == '2', ['id' => 'test_server_type_2', 'class' => 'form-check-input'])}}
+                <label class="form-check-label" for="test_server_type_2">お客様で調達</label>
+              </div>
+              <div class="form-check">
+                {{Form::radio('sitemap[test_server_type]', '3', $siteMap->test_server_type == '3', ['id' => 'test_server_type_3', 'class' => 'form-check-input'])}}
+                <label class="form-check-label" for="test_server_type_3">代理店で調達</label>
+              </div>
+              <div class="form-check">
+                {{Form::radio('sitemap[test_server_type]', '4', $siteMap->test_server_type == '4', ['id' => 'test_server_type_4', 'class' => 'form-check-input'])}}
+                <label class="form-check-label" for="test_server_type_4">弊社で調達</label>
+              </div>
+              <div class="mt-3">
+                {{Form::label('test_server_type_other', '備考')}}
+                {{Form::textarea('sitemap[test_server_type_other]', $siteMap->test_server_type_other, ['id' => 'test_server_type_other','class' => 'form-control', 'rows' => '1'])}}
+              </div>
+            </td>
         </tr>
       <tr>
         <th class="bg-secondary text-white"><label>納品方法</label></th>
@@ -218,7 +243,7 @@
                     </div>
                 </div>
 
-                <label for="browser_other">その他</label>
+                <h4 class="mt-3"><label for="browser_other">その他</label></h4>
                 {{Form::textarea('sitemap[browser_other]', $siteMap->browser_other, ['id' => 'browser_other', 'class' => 'form-control', 'rows' => '1'])}}
             </td>
         </tr>
