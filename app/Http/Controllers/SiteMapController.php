@@ -299,7 +299,6 @@ class SiteMapController extends Controller
     $pages = Model\SiteMapPage::orderBy('path')->get();
 
     $validator = new \HtmlValidator\Validator;
-    $cssValidator = new \GlValidator\GlW3CValidator;
     $parser = new \PHPHtmlParser\Dom;
 
     // history 作成
@@ -353,29 +352,7 @@ class SiteMapController extends Controller
         $errorMessages[] = $msg;
       }
 
-      // W3C CSS validation
-      try {
-        /* @var \HtmlValidator\Response */
-        $result = $validator->validate($content);
-        if ($result instanceof \HtmlValidator\Response && $result->hasMessages()) {
-          foreach ($result->getMessages() as /* @var \HtmlValidator\Message */ $message) {
-            if (!in_array($message->getType(), ['error', 'warning'])) continue;
-            $msg = new Model\ResultMessage;
-            $msg->key = 'html';
-            $msg->type = $message->getType();
-            $lines = '[LINE: ' . implode('-', array_unique([$message->getFirstLine(), $message->getLastLine()])) . ']';
-            $msg->message = $lines . $message->getText();
-            $errorMessages[] = $msg;
-          }
-        }
-      } catch (ServerException $e) {
-        $msg = new Model\ResultMessage;
-        $msg->key = 'html';
-        $msg->type = 'error';
-        $msg->message = 'HTMLの解析に失敗しました';
-        $errorMessages[] = $msg;
-      }
-
+      // TODO W3C CSS validation
 
       // TODO ESLint
 
