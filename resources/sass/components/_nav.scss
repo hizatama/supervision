@@ -1,0 +1,24 @@
+// =============================================
+// nav (override)
+// =============================================
+
+.nav-tabs {
+  border-bottom: none;
+
+  .nav-link {
+    color: $theme-color;
+    border: none;
+    border-bottom-width: 3px;
+    transition: color 0.3s, border-bottom-color 0.3s;
+  }
+  .nav-link:hover {
+    border: none;
+    border-bottom: 3px solid currentColor;
+    color: transparentize($theme-color, 0.45);
+  }
+  .nav-link.active {
+    border: none;
+    border-bottom: 3px solid currentColor;
+    color: $theme-color;
+  }
+}

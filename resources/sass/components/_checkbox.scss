@@ -1,0 +1,15 @@
+// =============================================
+// checkbox
+// =============================================
+
+.custom-switch-lg {
+  .custom-control-label {
+    margin: .5rem 1rem;
+
+    &::before,
+    &::after {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+}

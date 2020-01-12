@@ -11,7 +11,7 @@
   <div class="container-fluid">
     @foreach($flashMessages as $flash)
       @if($flash->key === 'system')
-        <div class="alert alert-{{$flash->type}} alert-dismissible fade show" role="alert">
+        <div class="alert flush-message alert-{{$flash->type}} alert-dismissible fade show" role="alert">
           {{$flash->message}}
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -20,260 +20,38 @@
       @endif
     @endforeach
 
-    <ul class="nav nav-tabs">
-      <li class="nav-item">
-        <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings">共通設定</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link active" id="pages-tab" data-toggle="tab" href="#pages">ページ一覧</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="output-tab" data-toggle="tab" href="#output">サイトマップ</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="feature-tab" data-toggle="tab" href="#feature">今後追加予定機能</a>
-      </li>
-    </ul>
+    <div class="head bg-light">
+        <h2 class="h2 head-site-name">{{$siteMap->name}}</h2>
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link" id="hearing-tab" data-toggle="tab" href="#hearing">ヒアリングシート</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings">共通設定</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" id="pages-tab" data-toggle="tab" href="#pages">ページ一覧</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="output-tab" data-toggle="tab" href="#output">サイトマップ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="feature-tab" data-toggle="tab" href="#feature">今後追加予定機能</a>
+          </li>
+        </ul>
+    </div>
     <div class="tab-content">
+      <div class="tab-pane main-tab-pane fade" id="hearing" role="tabpanel" aria-labelledby="hearing-tab">
+          @include('sitemap.tab-hearing')
+      </div>
       <div class="tab-pane main-tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-        <h3>URL</h3>
-        <table class="table table--headers table--fluid">
-          <tr>
-            <th><label for="url_production">本番環境</label></th>
-            <td>
-              {{Form::text('sitemap[url_production]', $siteMap->url_production, ['id'=>'url_production', 'class' => 'form-control'])}}
-              <button type="button" class="btn btn-link" id="open_production_page">open</button>
-            </td>
-            <th><label for="url_staging">テスト環境</label></th>
-            <td>
-              {{Form::text('sitemap[url_staging]', $siteMap->url_staging, ['id'=>'url_staging', 'class' => 'form-control'])}}
-              <button type="button" class="btn btn-link" id="open_staging_page">open</button>
-            </td>
-          </tr>
-        </table>
-
-        <h3>meta</h3>
-        <table class="table table--headers table--fluid">
-          <tr>
-            <th><label for="keywords">charset</label></th>
-            <td>{{Form::text('sitemap[charset]', $siteMap->charset, ['id'=>'charset', 'class' => 'form-control'])}}</td>
-            <th><label for="keywords">favicon</label></th>
-            <td>{{Form::text('sitemap[favicon]', $siteMap->favicon, ['id'=>'favicon', 'class' => 'form-control'])}}</td>
-          </tr>
-          <tr>
-            <th><label for="keywords">title</label></th>
-            <td>{{Form::text('sitemap[title]', $siteMap->title, ['id'=>'title', 'class' => 'form-control'])}}</td>
-          </tr>
-          {{--        <tr>--}}
-          {{--          <th><label for="title_prefix">title prefix</label></th>--}}
-          {{--          <td>{{Form::text('sitemap[title_prefix]', $siteMap->title_prefix, ['id'=>'title_prefix', 'class' => 'form-control'])}}</td>--}}
-          {{--          <th><label for="title_suffix">title suffix</label></th>--}}
-          {{--          <td>{{Form::text('sitemap[title_suffix]', $siteMap->title_suffix, ['id'=>'title_suffix', 'class' => 'form-control'])}}</td>--}}
-          {{--        </tr>--}}
-          <tr>
-            <th><label for="keywords">keywords</label></th>
-            <td>{{Form::text('sitemap[keywords]', $siteMap->keywords, ['id'=>'keywords', 'class' => 'form-control'])}}</td>
-            <th><label for="description">description</label></th>
-            <td>{{Form::text('sitemap[description]', $siteMap->description, ['id'=>'description', 'class' => 'form-control'])}}</td>
-          </tr>
-          <tr>
-            <th><label for="og_image">og:url</label></th>
-            <td>{{Form::text('sitemap[og_url]', $siteMap->og_url, ['id'=>'og_url', 'class' => 'form-control'])}}</td>
-            <th><label for="og_image">og:title</label></th>
-            <td>{{Form::text('sitemap[og_title]', $siteMap->og_title, ['id'=>'og_title', 'class' => 'form-control'])}}</td>
-          </tr>
-          <tr>
-            <th><label for="og_image">og:description</label></th>
-            <td>{{Form::text('sitemap[og_description]', $siteMap->og_description, ['id'=>'og_description', 'class' => 'form-control'])}}</td>
-            <th><label for="og_image">og:image(絶対パス)</label></th>
-            <td>{{Form::text('sitemap[og_image]', $siteMap->og_image, ['id'=>'og_image', 'class' => 'form-control'])}}</td>
-          </tr>
-        </table>
+          @include('sitemap.tab-settings')
       </div>
       <div class="tab-pane main-tab-pane fade show active" id="pages" role="tabpanel" aria-labelledby="pages-tab">
-        @if($isPassed)
-          <div class="alert alert-success" role="alert">エラーはありません</div>
-        @endif
-        <div class="table--pages-wrapper">
-
-          <table class="table table--pages table-fixed" id="table-pages">
-            <thead>
-            <tr>
-              <th rowspan="2"></th>
-              <th rowspan="2">ページタイトル</th>
-              <th rowspan="2">パス</th>
-              <th colspan="9">meta</th>
-            </tr>
-            <tr>
-              <th>title</th>
-              <th>keywords</th>
-              <th>description</th>
-              <th>og:title</th>
-              <th>og:url</th>
-              <th>og:image</th>
-              <th>og:description</th>
-              <th>favicon</th>
-              <th>charset</th>
-            </tr>
-            </thead>
-            <tbody id="table_body">
-            @foreach($pages as $idx => $page)
-              <tr>
-                <td class="cell-status">
-                  @if(count($page->errors))
-                    <div class="alert alert-danger text-center">NG</div>
-                  @endif
-                </td>
-                <td>{{Form::hidden('pages['.$idx.'][id]', $page->id)}}{{Form::text('pages['.$idx.'][name]', $page->name, ['class' => 'form-control', 'required' => 'required'])}}</td>
-                <td class="cell-path">{{Form::text('pages['.$idx.'][path]', $page->path, ['class' => 'form-control'])}}</td>
-                <td>
-                  {{Form::checkbox('pages['.$idx.'][title_use_common]', 1, $page->title_use_common, ['class' => 'use-common-checkbox'])}}
-                  {{Form::text('pages['.$idx.'][title]', $page->title, ['class' => 'form-control custom-form-inline', 'data-common-selector' => '#title'])}}
-                  @if(isset($page->errors['title']))
-                    <ul class="alert alert-danger" role="alert">
-                      @foreach($page->errors['title'] as $historyDetail)
-                        <li>{{$historyDetail->message}}</li>
-                      @endforeach
-                    </ul>
-                  @endif
-                </td>
-                <td>
-                  {{Form::checkbox('pages['.$idx.'][keywords_use_common]', 1, $page->keywords_use_common, ['class' => 'use-common-checkbox'])}}
-                  {{Form::text('pages['.$idx.'][keywords]', $page->keywords, ['class' => 'form-control custom-form-inline', 'data-common-selector' => '#keywords'])}}
-                  @if(isset($page->errors['keywords']))
-                    <ul class="alert alert-danger" role="alert">
-                      @foreach($page->errors['keywords'] as $historyDetail)
-                        <li>{{$historyDetail->message}}</li>
-                      @endforeach
-                    </ul>
-                  @endif
-                </td>
-                <td>
-                  {{Form::checkbox('pages['.$idx.'][description_use_common]', 1, $page->description_use_common, ['class' => 'use-common-checkbox'])}}
-                  {{Form::text('pages['.$idx.'][description]', $page->description, ['class' => 'form-control custom-form-inline', 'data-common-selector' => '#description'])}}
-                  @if(isset($page->errors['description']))
-                    <ul class="alert alert-danger" role="alert">
-                      @foreach($page->errors['description'] as $historyDetail)
-                        <li>{{$historyDetail->message}}</li>
-                      @endforeach
-                    </ul>
-                  @endif
-                </td>
-                <td>
-                  {{Form::checkbox('pages['.$idx.'][og_title_use_common]', 1, $page->og_title_use_common, ['class' => 'use-common-checkbox'])}}
-                  {{Form::text('pages['.$idx.'][og_title]', $page->og_title, ['class' => 'form-control custom-form-inline', 'data-common-selector' => '#og_title'])}}
-                  @if(isset($page->errors['og:title']))
-                    <ul class="alert alert-danger" role="alert">
-                      @foreach($page->errors['og:title'] as $historyDetail)
-                        <li>{{$historyDetail->message}}</li>
-                      @endforeach
-                    </ul>
-                  @endif
-                </td>
-                <td>
-                  {{Form::checkbox('pages['.$idx.'][og_url_use_common]', 1, $page->og_url_use_common, ['class' => 'use-common-checkbox'])}}
-                  {{Form::text('pages['.$idx.'][og_url]', $page->og_url, ['class' => 'form-control custom-form-inline', 'data-common-selector' => '#og_url'])}}
-                  @if(isset($page->errors['og:url']))
-                    <ul class="alert alert-danger" role="alert">
-                      @foreach($page->errors['og:url'] as $historyDetail)
-                        <li>{{$historyDetail->message}}</li>
-                      @endforeach
-                    </ul>
-                  @endif
-                </td>
-                <td>
-                  {{Form::checkbox('pages['.$idx.'][og_image_use_common]', 1, $page->og_image_use_common, ['class' => 'use-common-checkbox'])}}
-                  {{Form::text('pages['.$idx.'][og_image]', $page->og_image, ['class' => 'form-control custom-form-inline', 'data-common-selector' => '#og_image'])}}
-                  @if(isset($page->errors['og:image']))
-                    <ul class="alert alert-danger" role="alert">
-                      @foreach($page->errors['og:image'] as $historyDetail)
-                        <li>{{$historyDetail->message}}</li>
-                      @endforeach
-                    </ul>
-                  @endif
-                </td>
-                <td>
-                  {{Form::checkbox('pages['.$idx.'][og_description_use_common]', 1, $page->og_description_use_common, ['class' => 'use-common-checkbox'])}}
-                  {{Form::text('pages['.$idx.'][og_description]', $page->og_description, ['class' => 'form-control custom-form-inline', 'data-common-selector' => '#og_description'])}}
-                  @if(isset($page->errors['og:description']))
-                    <ul class="alert alert-danger" role="alert">
-                      @foreach($page->errors['og:description'] as $historyDetail)
-                        <li>{{$historyDetail->message}}</li>
-                      @endforeach
-                    </ul>
-                  @endif
-                </td>
-                <td>
-                  {{Form::checkbox('pages['.$idx.'][favicon_use_common]', 1, $page->favicon_use_common, ['class' => 'use-common-checkbox'])}}
-                  {{Form::text('pages['.$idx.'][favicon]', $page->favicon, ['class' => 'form-control custom-form-inline', 'data-common-selector' => '#favicon'])}}
-                  @if(isset($page->errors['favicon']))
-                    <ul class="alert alert-danger" role="alert">
-                      @foreach($page->errors['favicon'] as $historyDetail)
-                        <li>{{$historyDetail->message}}</li>
-                      @endforeach
-                    </ul>
-                  @endif
-                </td>
-                <td>
-                  {{Form::checkbox('pages['.$idx.'][charset_use_common]', 1, $page->charset_use_common, ['class' => 'use-common-checkbox'])}}
-                  {{Form::text('pages['.$idx.'][charset]', $page->charset, ['class' => 'form-control custom-form-inline', 'data-common-selector' => '#charset'])}}
-                  @if(isset($page->errors['charset']))
-                    <ul class="alert alert-danger" role="alert">
-                      @foreach($page->errors['charset'] as $historyDetail)
-                        <li>{{$historyDetail->message}}</li>
-                      @endforeach
-                    </ul>
-                  @endif
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td colspan="100">
-                  @if(isset($page->errors['html']))
-                    <div class="p-2">
-                      <h6>W3C HTML Validation</h6>
-                      <ul class="alert alert-danger" role="alert">
-                      @foreach($page->errors['html'] as $historyDetail)
-                        <li>{{$historyDetail->message}}</li>
-                      @endforeach
-                      </ul>
-                    </div>
-                  @endif
-                </td>
-              </tr>
-            @endforeach
-            </tbody>
-          </table>
-        </div>
-        <div class="text-center">
-          <button type="button" id="add_row" class="btn btn-secondary">ページ追加</button>
-        </div>
+          @include('sitemap.tab-pages')
       </div>
       <div class="tab-pane main-tab-pane fade" id="output" role="tabpanel" aria-labelledby="output-tab">
-        <div class="container">
-
-          <ul class="nav nav-tabs">
-            <li class="nav-item">
-              <a class="nav-link active" id="horizontal-tab" data-toggle="tab" href="#horizontal">横出力</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="vertical-tab" data-toggle="tab" href="#vertical">縦出力</a>
-            </li>
-          </ul>
-
-          <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="horizontal" role="tabpanel" aria-labelledby="horizontal-tab">
-              <ul class="tree tree-horizontal root">
-                @include('sitemap.output-tree', ['pages' => $pageHierarchy])
-              </ul>
-            </div>
-            <div class="tab-pane fade" id="vertical" role="tabpanel" aria-labelledby="vertical-tab">
-              <ul class="tree tree-vertical root">
-                @include('sitemap.output-tree', ['pages' => $pageHierarchy])
-              </ul>
-            </div>
-          </div>
-        </div>
+          @include('sitemap.tab-output')
       </div>
       <div class="tab-pane main-tab-pane fade" id="feature" role="tabpanel" aria-labelledby="feature-tab">
         <ul>
@@ -581,10 +359,9 @@
       window.open(document.getElementById('url_production').value, '_blank');
     });
 
-    document.getElementById('open_staging_page').addEventListener('click', function(e){
-      e.preventDefault();
-      window.open(document.getElementById('url_staging').value, '_blank');
-    });
-
+    // document.getElementById('open_staging_page').addEventListener('click', function(e){
+    //   e.preventDefault();
+    //   window.open(document.getElementById('url_staging').value, '_blank');
+    // });
   </script>
 @endsection

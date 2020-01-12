@@ -73,17 +73,17 @@ class SiteMapController extends Controller
   }
 
   /**
-   * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+   * @param Request $request
+   * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+   * @throws \Exception
    */
   public function store(Request $request)
   {
     $msg = $this->update();
-    $key = Request::all('key');
+    $key = Request::input('key');
     $siteMap = Model\SiteMap::where('key', $key)->first();
 
-    return $this->viewSitemap($siteMap, [
-      'flashMessages' => [$msg]
-    ]);
+    return redirect(route('sitemap.show', ['key' => $key]))->with('flashMessage', [$msg]);
   }
 
   public function add(Request $request)
@@ -111,7 +111,7 @@ class SiteMapController extends Controller
   protected function update()
   {
 
-    $key = Request::all('key');
+    $key = Request::input('key');
     $postSiteMap = Request::all('sitemap');
     $postPages = Request::all('pages');
 

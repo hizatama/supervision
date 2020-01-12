@@ -18,4 +18,12 @@ class SiteMap extends Model
   {
     return hash('sha256', hash('md5', self::PREFIX . $id));
   }
+
+  /**
+   * @param $str
+   * @return bool
+   */
+  public function isTargetBrowser($str) {
+    return $this->browser_list && in_array($str, explode(',', $this->browser_list));
+  }
 }

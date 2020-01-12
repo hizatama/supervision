@@ -1,0 +1,13 @@
+// =============================================
+// alert
+// =============================================
+
+.alert {
+  &.flush-message {
+    z-index: 15;
+    position: fixed;
+    top: 0;
+    right: 50%;
+    transform: translateX(50%);
+  }
+}

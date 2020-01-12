@@ -17,13 +17,20 @@ body {
   background-color: #fff;
 }
 .main-inner {
-  margin-top: 30px;
+  //margin-top: 30px;
 }
 .main-tab-pane {
   padding: 1em;
 }
 
+.head {
+  padding-top: 2em;
+}
 
+
+@import 'components/checkbox';
+@import 'components/alert';
+@import 'components/nav';
 @import 'components/table';
 @import 'components/tree';
 @import 'components/sticky-footer';
