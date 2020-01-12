@@ -66,7 +66,7 @@ class SiteMapController extends Controller
   public function show($key)
   {
     $sitemap = Model\SiteMap::where('key', $key)->first();
-    if(!$sitemap){
+    if (!$sitemap) {
       return redirect()->route('sitemap.index');
     }
     return $this->viewSitemap($sitemap);
@@ -89,7 +89,7 @@ class SiteMapController extends Controller
   public function add(Request $request)
   {
 
-    $key = Model\SiteMap::generateKey('dummy'.microtime(true).rand());
+    $key = Model\SiteMap::generateKey('dummy' . microtime(true) . rand());
     // add New Record
     $tempSitemap = new Model\SiteMap();
     $tempSitemap->key = $key;
@@ -299,6 +299,7 @@ class SiteMapController extends Controller
     $pages = Model\SiteMapPage::orderBy('path')->get();
 
     $validator = new \HtmlValidator\Validator;
+    $cssValidator = new \GlValidator\GlW3CValidator;
     $parser = new \PHPHtmlParser\Dom;
 
     // history 作成
@@ -339,8 +340,8 @@ class SiteMapController extends Controller
             $msg = new Model\ResultMessage;
             $msg->key = 'html';
             $msg->type = $message->getType();
-            $lines = '[LINE: '.implode('-', array_unique([$message->getFirstLine(), $message->getLastLine()])).']';
-            $msg->message = $lines.$message->getText();
+            $lines = '[LINE: ' . implode('-', array_unique([$message->getFirstLine(), $message->getLastLine()])) . ']';
+            $msg->message = $lines . $message->getText();
             $errorMessages[] = $msg;
           }
         }
@@ -352,7 +353,30 @@ class SiteMapController extends Controller
         $errorMessages[] = $msg;
       }
 
-      // TODO W3C validation CSS
+      // W3C CSS validation
+      try {
+        /* @var \HtmlValidator\Response */
+        $result = $validator->validate($content);
+        if ($result instanceof \HtmlValidator\Response && $result->hasMessages()) {
+          foreach ($result->getMessages() as /* @var \HtmlValidator\Message */ $message) {
+            if (!in_array($message->getType(), ['error', 'warning'])) continue;
+            $msg = new Model\ResultMessage;
+            $msg->key = 'html';
+            $msg->type = $message->getType();
+            $lines = '[LINE: ' . implode('-', array_unique([$message->getFirstLine(), $message->getLastLine()])) . ']';
+            $msg->message = $lines . $message->getText();
+            $errorMessages[] = $msg;
+          }
+        }
+      } catch (ServerException $e) {
+        $msg = new Model\ResultMessage;
+        $msg->key = 'html';
+        $msg->type = 'error';
+        $msg->message = 'HTMLの解析に失敗しました';
+        $errorMessages[] = $msg;
+      }
+
+
       // TODO ESLint
 
       if (!empty($errorMessages)) {
@@ -393,19 +417,19 @@ class SiteMapController extends Controller
     $children = [];
     $data = [];
 
-    if(count($pages) === 0) {
+    if (count($pages) === 0) {
       return [];
     }
 
     $sortedPages = [];
-    foreach($pages as $page) {
-      $sortedPages['/'.$page->path] = $page;
+    foreach ($pages as $page) {
+      $sortedPages['/' . $page->path] = $page;
     }
     ksort($sortedPages);
 
-    foreach($sortedPages as $path => $page) {
+    foreach ($sortedPages as $path => $page) {
       $pathInfo = explode('/', ltrim($page->path));
-      if(isset($children[$path])) continue;
+      if (isset($children[$path])) continue;
       $children[$path] = [
         'title' => $page->name,
         'path' => $page->path,

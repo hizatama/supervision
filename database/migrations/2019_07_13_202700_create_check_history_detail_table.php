@@ -19,6 +19,7 @@ class CreateCheckHistoryDetailTable extends Migration
             $table->integer('history_id');
             $table->integer('page_id');
             $table->string('key');
+            $table->text('file')->nullable();
             $table->string('type');
             $table->string('message');
             $table->timestamps();

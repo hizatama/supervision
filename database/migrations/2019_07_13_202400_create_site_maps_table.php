@@ -17,12 +17,17 @@ class CreateSiteMapsTable extends Migration
       $table->bigIncrements('id');
       $table->string('key', 190)->unique();
       $table->string('name');
+
+      // ヒアリングシート
       $table->integer('project_type')->nullable();
       $table->string('project_type_other')->nullable();
-      // ヒアリングシート
       $table->string('site_domain')->nullable();
       $table->string('test_server')->nullable();
       $table->string('browser_list')->nullable();
+      $table->string('site_page_lg')->nullable();
+      $table->string('site_page_md')->nullable();
+      $table->string('site_page_sm')->nullable();
+      $table->string('site_page_xs')->nullable();
       $table->string('min_width')->nullable();
       $table->string('min_height')->nullable();
       $table->string('max_width')->nullable();

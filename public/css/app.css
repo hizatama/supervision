@@ -10684,7 +10684,7 @@ body {
 }
 
 .nav-tabs .nav-link {
-  color: #3B5ED1;
+  color: #333;
   border: none;
   border-bottom-width: 3px;
   transition: color 0.3s, border-bottom-color 0.3s;
