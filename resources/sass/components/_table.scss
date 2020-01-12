@@ -58,6 +58,11 @@
     }
   }
 
+  .form-control[readonly] {
+    background-color: #fff;
+    border: none;
+  }
+
   .use-common-checkbox {
     position: absolute;
     top: 10px;

@@ -10661,6 +10661,14 @@ body {
   padding-top: 2em;
 }
 
+.edit-mode {
+  display: none;
+}
+
+.edit-mode.__editing {
+  display: unset;
+}
+
 .custom-switch-lg .custom-control-label {
   margin: 0.5rem 1rem;
 }
@@ -10753,6 +10761,11 @@ body {
 
 .table--pages input[type=text].custom-form-inline {
   padding-left: 25px;
+}
+
+.table--pages .form-control[readonly] {
+  background-color: #fff;
+  border: none;
 }
 
 .table--pages .use-common-checkbox {

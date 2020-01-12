@@ -35,8 +35,8 @@
 {{--        <li class="nav-item">--}}
 {{--          <a class="nav-link" id="output-tab" data-toggle="tab" href="#output">サイトマップ</a>--}}
 {{--        </li>--}}
-        <li class="nav-item">
-          <a class="nav-link" id="feature-tab" data-toggle="tab" href="#feature">今後追加予定機能</a>
+        <li class="nav-item" style="margin-left: auto;">
+          <a class="nav-link" id="feature-tab" data-toggle="tab" href="#feature">今後の予定</a>
         </li>
       </ul>
     </div>
