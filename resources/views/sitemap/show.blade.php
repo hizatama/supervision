@@ -353,15 +353,5 @@
         document.getElementById('check_page_form').submit();
       }
     });
-
-    document.getElementById('open_production_page').addEventListener('click', function(e){
-      e.preventDefault();
-      window.open(document.getElementById('url_production').value, '_blank');
-    });
-
-    // document.getElementById('open_staging_page').addEventListener('click', function(e){
-    //   e.preventDefault();
-    //   window.open(document.getElementById('url_staging').value, '_blank');
-    // });
   </script>
 @endsection

@@ -2,16 +2,27 @@
     <h3 class="mt-3">基本設定</h3>
     <table class="table table--headers">
         <tr>
-            <th class="bg-secondary text-white"><label for="site_name">サイト名</label></th>
-            <td>
+            <th class="bg-secondary text-white"><label for="site_name">プロジェクト名</label></th>
+            <td colspan="3">
                 {{Form::text('sitemap[name]', $siteMap->name, ['id' => 'site_name','class' => 'form-control'])}}
             </td>
+        </tr>
+        <tr>
             <th class="bg-secondary text-white"><label for="url_production">本番環境</label></th>
             <td>
-                <div class="input-group mb-3">
+                <div class="input-group">
                     {{Form::text('sitemap[url_production]', $siteMap->url_production, ['id'=>'url_production', 'class' => 'form-control', 'placeholder' => 'https://example.com'])}}
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="button" id="open_production_page">Open</button>
+                    </div>
+                </div>
+            </td>
+            <th class="bg-secondary text-white"><label for="url_staging">テスト環境</label></th>
+            <td>
+                <div class="input-group">
+                    {{Form::text('sitemap[url_staging]', $siteMap->url_staging, ['id'=>'url_staging', 'class' => 'form-control', 'placeholder' => 'https://example.com'])}}
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="open_staging_page">Open</button>
                     </div>
                 </div>
             </td>
@@ -56,3 +67,14 @@
         </tr>
     </table>
 </div>
+<script>
+  document.getElementById('open_production_page').addEventListener('click', function(e){
+    e.preventDefault();
+    window.open(document.getElementById('url_production').value, '_blank');
+  });
+
+  document.getElementById('open_staging_page').addEventListener('click', function(e){
+    e.preventDefault();
+    window.open(document.getElementById('url_staging').value, '_blank');
+  });
+</script>
