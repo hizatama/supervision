@@ -10766,6 +10766,8 @@ body {
 .table--pages .form-control[readonly] {
   background-color: #fff;
   border: none;
+  outline: none;
+  box-shadow: none;
 }
 
 .table--pages .use-common-checkbox {

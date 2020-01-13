@@ -28,10 +28,10 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="{{route('sitemap.index')}}">SiteMap <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="{{route('sitemap.index')}}">制作管理 <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">それとか</a>
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">あれとか</a>
           </li>
           <li class="nav-item">
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">これとか</a>

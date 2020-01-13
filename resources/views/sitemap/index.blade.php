@@ -17,7 +17,7 @@
       @foreach($siteMaps as $sitemap)
         <tr>
           <td>{{$sitemap->name}}</td>
-          <td>{{Html::link(route('sitemap.show', ['key' => $sitemap->key]), 'サイトマップ')}}</td>
+          <td>{{Html::link(route('sitemap.show', ['key' => $sitemap->key]), '制作管理')}}</td>
           <td>{{$sitemap->updated_at}}</td>
         </tr>
       @endforeach

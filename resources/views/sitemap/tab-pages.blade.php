@@ -155,7 +155,7 @@
 <div class="text-center">
   {{Form::button('編集', ['id' => 'edit_page', 'class' => 'btn btn-dark'])}}
   {{Form::button('ページ追加', ['id' => 'add_row', 'class' => 'btn btn-secondary edit-mode'])}}
-  {{Form::button('ページチェックを実行', ['class' => 'btn btn-secondary exec-check-page edit-mode'])}}
+  {{Form::button('ページチェックを実行', ['class' => 'btn btn-secondary exec-check-page'])}}
 </div>
 
 <script>

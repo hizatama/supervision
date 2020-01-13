@@ -61,6 +61,8 @@
   .form-control[readonly] {
     background-color: #fff;
     border: none;
+    outline: none;
+    box-shadow: none;
   }
 
   .use-common-checkbox {
