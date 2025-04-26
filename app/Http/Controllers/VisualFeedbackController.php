@@ -6,6 +6,7 @@ use App\Model;
 use HtmlValidator\Exception\ServerException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 class VisualFeedbackController extends Controller
 {
@@ -18,35 +19,8 @@ class VisualFeedbackController extends Controller
    */
   private function viewIndex($addeData = [])
   {
-
-
-    $history = Model\CheckHistory::select()->orderByDesc('revision')->first();
-    $pages = Model\SiteMapPage::orderBy('path')->get();
-    $checkHistories = [];
-    foreach ($pages as $page) {
-      $page->isChecked = !!Model\CheckHistoryDetail::where('page_id', $page->id)->count();
-      if ($history && !$history->is_passed) {
-        $allErrors = Model\CheckHistoryDetail::select()
-          ->where('history_id', $history->id)
-          ->where('page_id', $page->id)
-          ->get();
-
-        $page->errors = [];
-        foreach ($allErrors as $error) {
-          if (!isset($page->errors[$error->key])) $page->errors[$error->key] = [];
-          $page->errors[$error->key][] = $error;
-        }
-      }
-    }
-
-
     $data = [
-      'siteMap' => Model\SiteMap::all()[0],
-      'pages' => $pages,
-      'isPassed' => $history && $history->is_passed,
-      'checkHistories' => $checkHistories,
       'flashMessages' => $addeData['flashMessages'] ?? [],
-      'pageHierarchy' => $this->makePagesHierarchy($pages),
     ];
 
     return view('visualfeedback.index', $data, $addeData);
@@ -55,9 +29,31 @@ class VisualFeedbackController extends Controller
   /**
    * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
    */
-  public function index()
+  public function index(\Illuminate\Http\Request $request, $key = null)
   {
-    return $this->viewIndex();
+    if (!$key) {
+      throw new InvalidParameterException('key is invalid.');
+    }
+
+    $feedback = Model\Feedback::where('key', $key)->get();
+    return $this->viewIndex([
+      'feedback' => $feedback ?: [],
+      'images' => $feedback->feedbackImages,
+    ]);
+  }
+
+  public function show(\Illuminate\Http\Request $request, $key)
+  {
+    $feedback = Model\Feedback::with('feedbackImage.feedbackComment')
+      ->where('key', $key)->first();
+    if (!$feedback) {
+      throw new InvalidParameterException('key is invalid.');
+    }
+
+    return $this->viewIndex([
+      'feedbackImages' => json_encode($feedback),
+    ]);
+
   }
 
   /**
@@ -304,8 +300,8 @@ class VisualFeedbackController extends Controller
             $msg = new Model\ResultMessage;
             $msg->key = 'html';
             $msg->type = $message->getType();
-            $lines = '[LINE: '.implode('-', array_unique([$message->getFirstLine(), $message->getLastLine()])).']';
-            $msg->message = $lines.$message->getText();
+            $lines = '[LINE: ' . implode('-', array_unique([$message->getFirstLine(), $message->getLastLine()])) . ']';
+            $msg->message = $lines . $message->getText();
             $errorMessages[] = $msg;
           }
         }
@@ -358,14 +354,14 @@ class VisualFeedbackController extends Controller
     $data = [];
 
     $sortedPages = [];
-    foreach($pages as $page) {
-      $sortedPages['/'.$page->path] = $page;
+    foreach ($pages as $page) {
+      $sortedPages['/' . $page->path] = $page;
     }
     ksort($sortedPages);
 
-    foreach($sortedPages as $path => $page) {
+    foreach ($sortedPages as $path => $page) {
       $pathInfo = explode('/', ltrim($page->path));
-      if(isset($children[$path])) continue;
+      if (isset($children[$path])) continue;
       $children[$path] = [
         'title' => $page->name,
         'path' => $page->path,

@@ -7,6 +7,7 @@
 @endsection
 @section('content')
   {{Form::open(['route'=>'visualfeedback.store', 'method' => 'post'])}}
+{{--  {!! $feedbackImages !!}--}}
   <div class="container-fluid">
 
     <div id="vf-image-container" class="vf-image-container"></div>
@@ -265,12 +266,12 @@ class VFPageStore {
     })
   }
 
-  add(src, title)  {
+  add(src, title, id)  {
     const { items } = this.state
     this.state.items = [
       ...items,
       {
-        id: this.count,
+        id: id === undefined ? this.count : id,
         title,
         src
       }
@@ -348,7 +349,7 @@ class VFCommentStore {
   }
 
   add(payload) {
-    const { pageId, frame } = payload
+    const { pageId, frame, comment } = payload
     const { items } = this.state
     this.state.items = [
       ...items,
@@ -356,11 +357,11 @@ class VFCommentStore {
         id: this.count,
         pageId,
         frame,
-        comment: ""
+        comment
       }
     ]
-    this.show(this.count)
     this.updateDOM()
+    this.show(this.count)
     this.count += 1
   }
 
@@ -443,7 +444,8 @@ const setImgEventListener = ($target) => {
     }
     commentStore.add({
       pageId,
-      frame
+      frame,
+      comment: ''
     })
     const { items } = commentStore.state
     id = items[items.length - 1].id
@@ -600,6 +602,7 @@ const setCommentDeleteEventListener = ($target) => {
     const title = `PAGE ${pageStore.state.items.length + 1}`
     pageStore.add(src, title)
     commentStore.updateDOM()
+    $input.value = ''
   })
   $input.addEventListener('change', (e) => {
     reader.readAsDataURL(e.target.files[0])
@@ -612,6 +615,29 @@ const setCommentDeleteEventListener = ($target) => {
   // $dropBox.addEventListener('drop', function(e) {
   //   debugger
   // }, false)
+}
+
+{
+  /* load Data */
+  const initialData = {!! $feedbackImages !!};
+  initialData.feedback_image.forEach((image) => {
+    pageStore.add('/feedback/' + initialData.key + '/' + image.filename, image.title, image.id)
+    image.feedback_comment.forEach((comment)=>{
+      commentStore.add({
+          pageId: image.id,
+          comment: comment.comment,
+          frame: {
+              width: comment.width,
+              height: comment.height,
+              x: comment.x,
+              y: comment.y,
+          }
+      })
+      // commentStore.show(comment.id)
+    })
+  })
+  commentStore.updateDOM()
+  pageStore.updateDOM()
 }
 
   </script>

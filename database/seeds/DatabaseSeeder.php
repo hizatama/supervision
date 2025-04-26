@@ -14,6 +14,9 @@ class DatabaseSeeder extends Seeder
     $this->call([
       SiteMapTableSeeder::class,
       SiteMapPagesTableSeeder::class,
+      FeedbackTableSeeder::class,
+      FeedbackImageTableSeeder::class,
+      FeedbackCommentTableSeeder::class,
     ]);
   }
 }
