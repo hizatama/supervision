@@ -6,7 +6,8 @@
 
 @endsection
 @section('content')
-  {{Form::open(['route'=>'visualfeedback.store', 'method' => 'post'])}}
+<form action="route('visualfeedback.store', ['sitemap' => $siteMap->key])}}" method="post">
+  @csrf
 {{--  {!! $feedbackImages !!}--}}
   <div class="container-fluid">
 
@@ -22,7 +23,7 @@
       </div><!-- /.vf-upload-modal__inner -->
     </div><!-- /.vf-upload-modal -->
   </div>
-  {{Form::close()}}
+</form>
 
 @endsection
 @section('scripts')

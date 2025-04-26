@@ -17,7 +17,7 @@
       @foreach($siteMaps as $sitemap)
         <tr>
           <td>{{$sitemap->name}}</td>
-          <td>{{Html::link(route('sitemap.show', ['key' => $sitemap->key]), '制作管理')}}</td>
+          <td><a href="{{route('sitemap.show', ['sitemap' => $sitemap->key])}}">制作管理</a></td>
           <td>{{$sitemap->updated_at}}</td>
         </tr>
       @endforeach
@@ -27,15 +27,18 @@
   <div class="sticky-footer is-fixed">
     <div class="sticky-footer__inner">
       <div class="text-right">
-        {{Form::open(['url' => route('sitemap.add'), 'method' => 'post', 'id' => 'add_form'])}}
-        {{Form::button('サイトを追加する', ['class' => 'btn btn-secondary exec-add-page'])}}
-        {{Form::close()}}
+        <form action="{{route('sitemap.add')}}" method="post" id="add_form">
+          @csrf
+          <input type=button class="btn btn-secondary exec-add-page" value="サイトを追加する">
+        </form>
       </div>
     </div>
   </div>
 
-  {{Form::open(['url'=>route('sitemap.destroy', ['key' => '1']), 'method' => 'delete', 'id' => 'delete_form'])}}
-  {{Form::close()}}
+  <form id="delete_form" action="{{route('sitemap.destroy', ['sitemap' => '1'])}}" method="post">
+    @csrf
+    @method('DELETE')
+  </form>
 @endsection
 @section('scripts')
   <script>

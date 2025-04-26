@@ -6,8 +6,9 @@
 
 @endsection
 @section('content')
-  {{Form::open(['route'=>'sitemap.store', 'method' => 'post'])}}
-  {{Form::hidden('key', $siteMap->key)}}
+<form action="{{route('sitemap.store')}}" method="post" id="sitemap_form">
+  @csrf
+  <input type="hidden" name="key" value="{{$siteMap->key}}">
   <div>
     @foreach($flashMessages as $flash)
       @if($flash->key === 'system')
@@ -63,17 +64,17 @@
   <div class="sticky-footer is-fixed">
     <div class="sticky-footer__inner">
       <div class="text-right">
-        {{Form::submit('登録する', ['class'=>'btn btn-primary'])}}
+        <button type="submit" class="btn btn-primary">登録する</button>
       </div>
     </div>
   </div>
-  {{Form::close()}}
-
-  {{Form::open(['url'=>route('sitemap.check', ['key' => $siteMap->key]), 'method' => 'get', 'id' => 'check_page_form'])}}
-  {{Form::close()}}
-
-  {{Form::open(['url'=>route('sitemap.output'), 'method' => 'get', 'id' => 'sitemap_form', 'target' => '_blank'])}}
-  {{Form::close()}}
+</form>
+<form action="{{route('sitemap.check', ['key' => $siteMap->key])}}" method="get" id="check_page_form">
+  @csrf
+</form>
+<form action="{{route('sitemap.output')}}" method="get" id="sitemap_form" target="_blank">
+  @csrf
+</form>
 @endsection
 @section('scripts')
 @endsection
