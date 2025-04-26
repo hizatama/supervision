@@ -22,9 +22,9 @@ class CreateFeedbackImageTable extends Migration
 
             $table->primary(['feedback_id', 'no']);
             $table->index('feedback_id');
-//            $table->foreign('feedback_id')
-//                  ->references('id')
-//                  ->on('feedback');
+            $table->foreign('feedback_id')
+                  ->references('id')
+                  ->on('feedback');
         });
     }
 
