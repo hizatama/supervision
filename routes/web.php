@@ -11,11 +11,15 @@
 |
 */
 
+use App\Http\Controllers\SiteMapController;
+use App\Http\Controllers\VisualFeedbackController;
+
 Route::get('/', function () {
   return redirect(route('sitemap.index'));
 });
-Route::resource('project', 'ProjectController');
-Route::resource('sitemap', 'SiteMapController');
-Route::get('/sitemap/check/{key}', 'SiteMapController@check')->name('sitemap.check');
-Route::get('/sitemap/output', 'SiteMapController@output')->name('sitemap.output');
-Route::post('/sitemap/add', 'SiteMapController@add')->name('sitemap.add');
+Route::resource('sitemap', SiteMapController::class);
+Route::get('sitemap/check/{key}', [SiteMapController::class, 'check'])->name('sitemap.check');
+Route::get('sitemap/output', [SiteMapController::class,'output'])->name('sitemap.output');
+Route::post('sitemap/add', [SiteMapController::class, 'add'])->name('sitemap.add');
+
+Route::resource('visualfeedback', VisualFeedbackController::class);

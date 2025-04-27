@@ -2,7 +2,7 @@
   <li class="node">
     <div class="parent">
       <div class="node-item">
-        {{Form::text($path, $page['title'], ['class' => 'node-textbox'])}}
+        <input type="text" name="path[{{$path}}]" value="{{$page['title']}}" class="node-textbox" />
       </div>
     </div>
     @if(count($page['children']))

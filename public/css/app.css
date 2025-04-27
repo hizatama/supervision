@@ -10911,3 +10911,95 @@ body {
   position: absolute;
 }
 
+.vf-image {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+}
+
+.vf-image-container {
+  position: relative;
+  max-width: 1000px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.vf-comment-rect {
+  display: block;
+  position: absolute;
+  border: 2px solid rgba(255, 0, 0, 0.3);
+  border-radius: 5px;
+  background-color: rgba(255, 255, 0, 0.3);
+  cursor: pointer;
+  transition: border 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  z-index: 10;
+}
+
+.vf-comment-rect::before {
+  display: inline-block;
+  position: absolute;
+  content: attr(data-comment-id);
+  left: -1em;
+  top: -1em;
+  text-align: center;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 1.5em;
+  line-height: 1.5;
+  background: red;
+  color: #fff;
+  font-size: 12px;
+}
+
+.vf-comment-rect.__dragging {
+  pointer-events: none;
+}
+
+.vf-comment-rect:hover {
+  border-color: rgba(255, 0, 0, 0.5);
+  background-color: rgba(255, 255, 0, 0.5);
+}
+
+.vf-comment-popup {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 300px;
+  border: 2px solid #333;
+  background: #fff;
+  font-size: 13px;
+  padding: 1em;
+  z-index: 15;
+}
+
+.vf-comment-popup.__show {
+  display: block;
+}
+
+.vf-comment-popup-num {
+  position: absolute;
+  left: -1em;
+  top: -1em;
+  display: inline-block;
+  text-align: center;
+  width: 2em;
+  height: 2em;
+  border-radius: 2em;
+  line-height: 2;
+  background: red;
+  color: #fff;
+  font-size: 14px;
+}
+
+.vf-comment-popup-body {
+  margin: 0;
+  padding: 1em;
+  border: none;
+  font-size: 1em;
+  width: 100%;
+}
+

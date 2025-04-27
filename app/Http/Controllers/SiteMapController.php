@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model;
+use App\Model\SiteMap;
 use HtmlValidator\Exception\ServerException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
@@ -60,10 +61,10 @@ class SiteMapController extends Controller
   }
 
   /**
-   * @param $key
+   * @param string $key
    * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
    */
-  public function show($key)
+  public function show(string $key)
   {
     $sitemap = Model\SiteMap::where('key', $key)->first();
     if (!$sitemap) {
@@ -318,7 +319,7 @@ class SiteMapController extends Controller
 
       // parse DOM
       $content = file_get_contents(rtrim($siteMap->url_production, '/') . '/' . ltrim($page->path, '/'));
-      $parser->load($content);
+      $parser->loadStr($content);
 
       // pageInfo取得
 //      $pageInfo = new Model\PageInfo;
