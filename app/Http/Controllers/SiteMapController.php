@@ -84,7 +84,7 @@ class SiteMapController extends Controller
     $key = Request::input('key');
     $siteMap = Model\SiteMap::where('key', $key)->first();
 
-    return redirect(route('sitemap.show', ['key' => $key]))->with('flashMessage', [$msg]);
+    return redirect(route('sitemap.show', ['sitemap' => $siteMap->key]))->with('flashMessage', [$msg]);
   }
 
   public function add(Request $request)
@@ -379,7 +379,7 @@ class SiteMapController extends Controller
       $history->save();
     }
 
-    return redirect()->route('sitemap.show', ['key' => $key]);
+    return redirect()->route('sitemap.show', ['sitemap' => $siteMap->key]);
   }
 
   public function output()
